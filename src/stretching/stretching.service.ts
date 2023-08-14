@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStretchingRequest } from './request/create-stretching.request';
 import { Stretching } from 'src/persistence/entity/stretching.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,6 +7,14 @@ import { StretchingEffectRepository } from 'src/persistence/repository/stretchin
 import { StretchingImageRepository } from 'src/persistence/repository/stretching-image.repository';
 import { StretchingPrecautionRepository } from 'src/persistence/repository/stretching-precaution.repository';
 import { StretchingTechniqueRepository } from 'src/persistence/repository/stretching-technique.repository';
+import {
+  IStretchingDetailResponse,
+  StretchingDetailResponse,
+} from './response/stretching-detail.response';
+import { StretchingEffect } from 'src/persistence/entity/stretching-effect.entity';
+import { StretchingImage } from 'src/persistence/entity/stretching-image.entity';
+import { StretchingTechnique } from 'src/persistence/entity/stretching-technique.entity';
+import { StretchingPrecaution } from 'src/persistence/entity/stretching-precaution.entity';
 
 @Injectable()
 export class StretchingService {
@@ -84,15 +92,55 @@ export class StretchingService {
     return newStretching;
   }
 
-  // async getStretchingById(id: number): Promise<Stretching> {
-  //   const found = await this.stretchingRepository.findOne({ where: { id } });
+  async getStretchingById(id: number): Promise<StretchingDetailResponse> {
+    const stretching: Stretching = await this.stretchingRepository.findOne({
+      where: { id },
+    });
 
-  //   if (!found) {
-  //     throw new NotFoundException(`Can't find Stretching with id ${id}`);
-  //   }
+    if (!stretching) {
+      throw new NotFoundException(
+        `해당 스트레칭이 존재하지 않습니다. id: ${id}`,
+      );
+    }
 
-  //   return found;
-  // }
+    const effectList: StretchingEffect[] =
+      await this.stretchingEffectRepository.find({
+        where: { stretchingId: id },
+      });
+
+    const imageList: StretchingImage[] =
+      await this.stretchingImageRepository.find({
+        where: { stretchingId: id },
+      });
+
+    const techniqueList: StretchingTechnique[] =
+      await this.stretchingTechniqueRepository.find({
+        where: { stretchingId: id },
+      });
+
+    const precautionList: StretchingPrecaution[] =
+      await this.stretchingPrecautionRepository.find({
+        where: { stretchingId: id },
+      });
+
+    const StretchingDetailResponseParam: IStretchingDetailResponse = {
+      title: stretching.title,
+      mainCategory: stretching.mainCategory,
+      subCategory: stretching.subCategory,
+      collect: stretching.collect,
+      set: stretching.set,
+      videoUrl: stretching.videoUrl,
+      adminId: stretching.adminId,
+      effectList: effectList.map((stretchingEffect) => stretchingEffect.effect),
+      imageList: imageList.map((stretchingImage) => stretchingImage.url),
+      techniqueList: techniqueList.map((technique) => technique.description),
+      precautionList: precautionList.map(
+        (precaution) => precaution.description,
+      ),
+    };
+
+    return new StretchingDetailResponse(StretchingDetailResponseParam);
+  }
 
   // async deleteStretching(id: number): Promise<void> {
   //   // remove: 없으면 에러 delete: 없어도 에러 X

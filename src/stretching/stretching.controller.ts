@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Get,
   Logger,
+  Param,
+  ParseIntPipe,
   Post,
   UsePipes,
   ValidationPipe,
@@ -10,6 +13,7 @@ import { StretchingService } from './stretching.service';
 import { CreateStretchingRequest } from './request/create-stretching.request';
 // import { StretchingStatusValidationPipe } from './pipe/stretching-status-validation.pipe';
 import { Stretching } from 'src/persistence/entity/stretching.entity';
+import { StretchingDetailResponse } from './response/stretching-detail.response';
 
 @Controller('stretchings')
 export class StretchingController {
@@ -31,12 +35,12 @@ export class StretchingController {
     return this.stretchingService.createStretching(createStretchingRequest);
   }
 
-  // @Get('/:id')
-  // getStretchingById(
-  //   @Param('id', ParseIntPipe) id: number,
-  // ): Promise<Stretching> {
-  //   return this.stretchingService.getStretchingById(id);
-  // }
+  @Get('/:id')
+  getStretchingById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<StretchingDetailResponse> {
+    return this.stretchingService.getStretchingById(id);
+  }
 
   // @Delete('/:id')
   // deleteStretchingById(@Param('id', ParseIntPipe) id: number): Promise<void> {
