@@ -8,13 +8,18 @@ import { StretchingImageRepository } from 'src/persistence/repository/stretching
 import { StretchingPrecautionRepository } from 'src/persistence/repository/stretching-precaution.repository';
 import { StretchingTechniqueRepository } from 'src/persistence/repository/stretching-technique.repository';
 import {
-  IStretchingDetailResponse,
+  IStretchingDetailDTO,
   StretchingDetailResponse,
 } from './response/stretching-detail.response';
 import { StretchingEffect } from 'src/persistence/entity/stretching-effect.entity';
 import { StretchingImage } from 'src/persistence/entity/stretching-image.entity';
 import { StretchingTechnique } from 'src/persistence/entity/stretching-technique.entity';
 import { StretchingPrecaution } from 'src/persistence/entity/stretching-precaution.entity';
+import {
+  IStretchingListDTO,
+  StretchingListResponse,
+} from './response/stretching-list.response';
+import { GetStretchingListRequest } from './request/get-stretching-list.request';
 
 @Injectable()
 export class StretchingService {
@@ -35,30 +40,50 @@ export class StretchingService {
     private stretchingTechniqueRepository: StretchingTechniqueRepository,
   ) {}
 
-  // async getAllStretchings(): Promise<Stretching[]> {
-  //   return await this.stretchingRepository.find();
-  // }
+  async getStretchingList(
+    request: GetStretchingListRequest,
+  ): Promise<StretchingListResponse> {
+    const [stretchings, total] =
+      await this.stretchingRepository.findStretchingList(request);
+
+    const stretchingList: IStretchingListDTO[] = await Promise.all(
+      stretchings.map(async (stretching) => {
+        const effectList: StretchingEffect[] =
+          await this.stretchingEffectRepository.find({
+            where: { stretchingId: stretching.id },
+          });
+
+        return {
+          id: stretching.id,
+          title: stretching.title,
+          mainCategory: stretching.mainCategory,
+          subCategory: stretching.subCategory,
+          views: stretching.views,
+          createdAt: stretching.createdAt,
+          effectList: effectList.map(
+            (stretchingEffect) => stretchingEffect.effect,
+          ),
+        };
+      }),
+    );
+    return new StretchingListResponse(total, stretchingList);
+  }
 
   // TODO: 트랜잭션
   async createStretching(
-    createStretchingRequest: CreateStretchingRequest,
+    request: CreateStretchingRequest,
   ): Promise<Stretching> {
     const newStretching = await this.stretchingRepository.createStretching({
-      title: createStretchingRequest.title,
-      mainCategory: createStretchingRequest.mainCategory,
-      subCategory: createStretchingRequest.subCategory,
-      collect: createStretchingRequest.collect,
-      set: createStretchingRequest.set,
+      title: request.title,
+      mainCategory: request.mainCategory,
+      subCategory: request.subCategory,
+      collect: request.collect,
+      set: request.set,
       adminId: null,
-      videoUrl: createStretchingRequest.videoUrl,
+      videoUrl: request.videoUrl,
     });
 
-    console.log(
-      createStretchingRequest.effectList,
-      typeof createStretchingRequest.effectList,
-    );
-
-    createStretchingRequest.effectList.forEach((effect, i) => {
+    request.effectList.forEach((effect, i) => {
       this.stretchingEffectRepository.createStretchingEffect({
         stretchingId: newStretching.id,
         order: i + 1,
@@ -66,7 +91,7 @@ export class StretchingService {
       });
     });
 
-    createStretchingRequest.imageList.forEach((url, i) => {
+    request.imageList.forEach((url, i) => {
       this.stretchingImageRepository.createStretchingImage({
         stretchingId: newStretching.id,
         order: i + 1,
@@ -74,7 +99,7 @@ export class StretchingService {
       });
     });
 
-    createStretchingRequest.techniqueList.forEach((technique, i) => {
+    request.techniqueList.forEach((technique, i) => {
       this.stretchingTechniqueRepository.createStretchingTechnique({
         stretchingId: newStretching.id,
         order: i + 1,
@@ -82,7 +107,7 @@ export class StretchingService {
       });
     });
 
-    createStretchingRequest.imageList.forEach((precaution, i) => {
+    request.imageList.forEach((precaution, i) => {
       this.stretchingPrecautionRepository.createStretchingPrecaution({
         stretchingId: newStretching.id,
         order: i + 1,
@@ -124,7 +149,7 @@ export class StretchingService {
         where: { stretchingId: id },
       });
 
-    const StretchingDetailResponseParam: IStretchingDetailResponse = {
+    const StretchingDetailResponseParam: IStretchingDetailDTO = {
       id: stretching.id,
       title: stretching.title,
       mainCategory: stretching.mainCategory,
@@ -132,6 +157,7 @@ export class StretchingService {
       collect: stretching.collect,
       set: stretching.set,
       videoUrl: stretching.videoUrl,
+      views: stretching.views,
       adminId: stretching.adminId,
       createdAt: stretching.createdAt,
       updatedAt: stretching.updatedAt,

@@ -20,3 +20,8 @@ export enum StretchingEffectType {
   RELIEF_TURTLE_NECK = 'RELIEF_TURTLE_NECK', // 거북목 완화
   RELIEF_ROUND_SHOULDER = 'RELIEF_ROUND_SHOULDER', // 라운드숄더 완화
 }
+
+export enum StretchingListOrderFilter {
+  RECENT = 'RECENT',
+  POPULAR = 'POPULAR',
+}
