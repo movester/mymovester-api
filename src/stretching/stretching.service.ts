@@ -21,6 +21,8 @@ import {
 } from './response/stretching-list.response';
 import { GetStretchingListRequest } from './request/get-stretching-list.request';
 import { CreateStretchingResponse } from './response/create-stretching.response';
+import { UpdateStretchingResponse } from './response/update-stretching.response';
+import { UpdateStretchingRequest } from './request/update-stretching.request';
 
 @Injectable()
 export class StretchingService {
@@ -189,15 +191,60 @@ export class StretchingService {
     await this.stretchingPrecautionRepository.delete({ stretchingId: id });
   }
 
-  // async updateStretchingStatus(
-  //   id: number,
-  //   status: StretchingStatus,
-  // ): Promise<Stretching> {
-  //   const stretching = await this.getStretchingById(id);
+  async updateStretching(
+    id: number,
+    request: UpdateStretchingRequest,
+  ): Promise<UpdateStretchingResponse> {
+    const stretching = await this.getStretchingById(id);
 
-  //   stretching.status = status;
-  //   await this.stretchingRepository.save(stretching);
+    stretching.title = request.title;
+    stretching.mainCategory = request.mainCategory;
+    stretching.subCategory = request.subCategory;
+    stretching.collect = request.collect;
+    stretching.set = request.set;
+    stretching.adminId = null;
+    stretching.videoUrl = request.videoUrl;
+    await this.stretchingRepository.save(stretching);
 
-  //   return stretching;
-  // }
+    // 기존 연관 객체들 삭제
+    await this.stretchingEffectRepository.delete({ stretchingId: id });
+    await this.stretchingImageRepository.delete({ stretchingId: id });
+    await this.stretchingTechniqueRepository.delete({ stretchingId: id });
+    await this.stretchingPrecautionRepository.delete({ stretchingId: id });
+
+    // insert TODO: 비효율적인 것 압니다.. 고민할 시간 좀 주세요
+    request.effectList.forEach((effect, i) => {
+      this.stretchingEffectRepository.createStretchingEffect({
+        stretchingId: id,
+        order: i + 1,
+        effect,
+      });
+    });
+
+    request.imageList.forEach((url, i) => {
+      this.stretchingImageRepository.createStretchingImage({
+        stretchingId: id,
+        order: i + 1,
+        url,
+      });
+    });
+
+    request.techniqueList.forEach((technique, i) => {
+      this.stretchingTechniqueRepository.createStretchingTechnique({
+        stretchingId: id,
+        order: i + 1,
+        description: technique,
+      });
+    });
+
+    request.imageList.forEach((precaution, i) => {
+      this.stretchingPrecautionRepository.createStretchingPrecaution({
+        stretchingId: id,
+        order: i + 1,
+        description: precaution,
+      });
+    });
+
+    return new UpdateStretchingResponse(stretching.id);
+  }
 }

@@ -1,6 +1,7 @@
 import { BadRequestException, PipeTransform } from '@nestjs/common';
 import { StretchingListOrderFilter } from 'src/common/enum';
 
+// Not used.
 export class StretchingListOrderFilterValidationPipe implements PipeTransform {
   readonly orderFilterOptions = [
     StretchingListOrderFilter.RECENT,
