@@ -1,4 +1,4 @@
-import { DataSource, Like, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Stretching } from '../entity/stretching.entity';
 import { Injectable } from '@nestjs/common';
 import {
