@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Logger,
   Param,
@@ -42,11 +43,11 @@ export class StretchingController {
     return this.stretchingService.getStretchingById(id);
   }
 
-  // @Delete('/:id')
-  // deleteStretchingById(@Param('id', ParseIntPipe) id: number): Promise<void> {
-  //   this.logger.verbose(`Someone trying to delete stretching id ${id}`);
-  //   return this.stretchingService.deleteStretching(id);
-  // }
+  @Delete('/:id')
+  deleteStretchingById(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    this.logger.verbose(`DELETE 스트레칭 id: ${id}`);
+    return this.stretchingService.deleteStretching(id);
+  }
 
   // @Put('/:id/status')
   // updateStretchingStatus(

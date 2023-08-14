@@ -39,6 +39,7 @@ export class StretchingService {
   //   return await this.stretchingRepository.find();
   // }
 
+  // TODO: 트랜잭션
   async createStretching(
     createStretchingRequest: CreateStretchingRequest,
   ): Promise<Stretching> {
@@ -145,14 +146,21 @@ export class StretchingService {
     return new StretchingDetailResponse(StretchingDetailResponseParam);
   }
 
-  // async deleteStretching(id: number): Promise<void> {
-  //   // remove: 없으면 에러 delete: 없어도 에러 X
-  //   const result = await this.stretchingRepository.delete(id);
+  // TODO: 트랜잭션 추가
+  async deleteStretching(id: number): Promise<void> {
+    const result = await this.stretchingRepository.delete(id);
 
-  //   if (result.affected === 0) {
-  //     throw new NotFoundException(`Can't find Stretching with id ${id}`);
-  //   }
-  // }
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        `해당 스트레칭이 존재하지 않습니다. id: ${id}`,
+      );
+    }
+
+    await this.stretchingEffectRepository.delete({ stretchingId: id });
+    await this.stretchingImageRepository.delete({ stretchingId: id });
+    await this.stretchingTechniqueRepository.delete({ stretchingId: id });
+    await this.stretchingPrecautionRepository.delete({ stretchingId: id });
+  }
 
   // async updateStretchingStatus(
   //   id: number,
