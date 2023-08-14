@@ -124,6 +124,7 @@ export class StretchingService {
       });
 
     const StretchingDetailResponseParam: IStretchingDetailResponse = {
+      id: stretching.id,
       title: stretching.title,
       mainCategory: stretching.mainCategory,
       subCategory: stretching.subCategory,
@@ -131,6 +132,8 @@ export class StretchingService {
       set: stretching.set,
       videoUrl: stretching.videoUrl,
       adminId: stretching.adminId,
+      createdAt: stretching.createdAt,
+      updatedAt: stretching.updatedAt,
       effectList: effectList.map((stretchingEffect) => stretchingEffect.effect),
       imageList: imageList.map((stretchingImage) => stretchingImage.url),
       techniqueList: techniqueList.map((technique) => technique.description),
