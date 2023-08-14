@@ -14,10 +14,10 @@ import {
 import { StretchingService } from './stretching.service';
 import { CreateStretchingRequest } from './request/create-stretching.request';
 // import { StretchingStatusValidationPipe } from './pipe/stretching-status-validation.pipe';
-import { Stretching } from 'src/persistence/entity/stretching.entity';
 import { StretchingDetailResponse } from './response/stretching-detail.response';
 import { StretchingListResponse } from './response/stretching-list.response';
 import { GetStretchingListRequest } from './request/get-stretching-list.request';
+import { CreateStretchingResponse } from './response/create-stretching.response';
 
 @Controller('stretchings')
 export class StretchingController {
@@ -36,7 +36,7 @@ export class StretchingController {
   @UsePipes(ValidationPipe)
   createStretching(
     @Body() createStretchingRequest: CreateStretchingRequest,
-  ): Promise<Stretching> {
+  ): Promise<CreateStretchingResponse> {
     this.logger.verbose(`POST 스트레칭 > ,
         Payload: ${JSON.stringify(createStretchingRequest)}}`);
     return this.stretchingService.createStretching(createStretchingRequest);

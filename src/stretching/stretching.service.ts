@@ -20,6 +20,7 @@ import {
   StretchingListResponse,
 } from './response/stretching-list.response';
 import { GetStretchingListRequest } from './request/get-stretching-list.request';
+import { CreateStretchingResponse } from './response/create-stretching.response';
 
 @Injectable()
 export class StretchingService {
@@ -72,7 +73,7 @@ export class StretchingService {
   // TODO: 트랜잭션
   async createStretching(
     request: CreateStretchingRequest,
-  ): Promise<Stretching> {
+  ): Promise<CreateStretchingResponse> {
     const newStretching = await this.stretchingRepository.createStretching({
       title: request.title,
       mainCategory: request.mainCategory,
@@ -115,7 +116,7 @@ export class StretchingService {
       });
     });
 
-    return newStretching;
+    return new CreateStretchingResponse(newStretching.id);
   }
 
   async getStretchingById(id: number): Promise<StretchingDetailResponse> {
