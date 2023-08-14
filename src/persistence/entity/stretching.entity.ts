@@ -124,24 +124,4 @@ export class Stretching extends BaseEntityClass {
     },
   )
   stretchingTechnique: StretchingTechnique[];
-
-  // create(
-  //   title: string,
-  //   mainCategory: StretchingMainCategoryType,
-  //   subCategory: StretchingSubCategoryType,
-  //   collect: number,
-  //   set: number,
-  //   adminId: number,
-  //   videoUrl: string,
-  // ) {
-  //   this.title = title;
-  //   this.mainCategory = mainCategory;
-  //   this.subCategory = subCategory;
-  //   this.collect = collect;
-  //   this.set = set;
-  //   this.adminId = adminId;
-  //   this.videoUrl = videoUrl;
-
-  //   return this;
-  // }
 }

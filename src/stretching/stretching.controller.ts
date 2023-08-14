@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -15,16 +16,21 @@ import { CreateStretchingRequest } from './request/create-stretching.request';
 // import { StretchingStatusValidationPipe } from './pipe/stretching-status-validation.pipe';
 import { Stretching } from 'src/persistence/entity/stretching.entity';
 import { StretchingDetailResponse } from './response/stretching-detail.response';
+import { StretchingListResponse } from './response/stretching-list.response';
+import { GetStretchingListRequest } from './request/get-stretching-list.request';
 
 @Controller('stretchings')
 export class StretchingController {
   private logger = new Logger('StretchingController');
   constructor(private stretchingService: StretchingService) {}
 
-  // @Get('/')
-  // getAllStretchings(): Promise<Stretching[]> {
-  //   return this.stretchingService.getAllStretchings();
-  // }
+  @Get('/')
+  getStretchingList(
+    // TODO: query param valid
+    @Query() query: GetStretchingListRequest,
+  ): Promise<StretchingListResponse> {
+    return this.stretchingService.getStretchingList(query);
+  }
 
   @Post('/')
   @UsePipes(ValidationPipe)

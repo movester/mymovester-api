@@ -4,7 +4,7 @@ import {
   StretchingSubCategoryType,
 } from 'src/common/enum';
 
-export interface IStretchingDetailResponse {
+export interface IStretchingDetailDTO {
   id: number;
   title: string;
   mainCategory: StretchingMainCategoryType;
@@ -16,12 +16,13 @@ export interface IStretchingDetailResponse {
   set: number;
   precautionList: string[];
   videoUrl: string;
+  views: number;
   adminId: number;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export class StretchingDetailResponse implements IStretchingDetailResponse {
+export class StretchingDetailResponse implements IStretchingDetailDTO {
   id: number;
   title: string;
   mainCategory: StretchingMainCategoryType;
@@ -33,11 +34,12 @@ export class StretchingDetailResponse implements IStretchingDetailResponse {
   set: number;
   precautionList: string[];
   videoUrl: string;
+  views: number;
   adminId: number;
   createdAt: Date;
   updatedAt: Date;
 
-  constructor(stretchingDetail: IStretchingDetailResponse) {
+  constructor(stretchingDetail: IStretchingDetailDTO) {
     this.id = stretchingDetail.id;
     this.title = stretchingDetail.title;
     this.mainCategory = stretchingDetail.mainCategory;
@@ -49,6 +51,7 @@ export class StretchingDetailResponse implements IStretchingDetailResponse {
     this.set = stretchingDetail.set;
     this.precautionList = stretchingDetail.precautionList;
     this.videoUrl = stretchingDetail.videoUrl;
+    this.views = stretchingDetail.views;
     this.adminId = stretchingDetail.adminId;
     this.createdAt = stretchingDetail.createdAt;
     this.updatedAt = stretchingDetail.updatedAt;
