@@ -7,17 +7,19 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { StretchingService } from './stretching.service';
 import { CreateStretchingRequest } from './request/create-stretching.request';
-// import { StretchingStatusValidationPipe } from './pipe/stretching-status-validation.pipe';
 import { StretchingDetailResponse } from './response/stretching-detail.response';
 import { StretchingListResponse } from './response/stretching-list.response';
 import { GetStretchingListRequest } from './request/get-stretching-list.request';
 import { CreateStretchingResponse } from './response/create-stretching.response';
+import { UpdateStretchingRequest } from './request/update-stretching.request';
+import { UpdateStretchingResponse } from './response/update-stretching.response';
 
 @Controller('stretchings')
 export class StretchingController {
@@ -55,11 +57,13 @@ export class StretchingController {
     return this.stretchingService.deleteStretching(id);
   }
 
-  // @Put('/:id/status')
-  // updateStretchingStatus(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Body('status', StretchingStatusValidationPipe) status: StretchingStatus,
-  // ): Promise<Stretching> {
-  //   return this.stretchingService.updateStretchingStatus(id, status);
-  // }
+  // TODO: body valid
+  @Put('/:id')
+  updateStretching(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateStretchingRequest: UpdateStretchingRequest,
+  ): Promise<UpdateStretchingResponse> {
+    this.logger.verbose(`PUT 스트레칭 id: ${id}`);
+    return this.stretchingService.updateStretching(id, updateStretchingRequest);
+  }
 }
