@@ -110,7 +110,7 @@ export class StretchingService {
       });
     });
 
-    request.imageList.forEach((precaution, i) => {
+    request.precautionList.forEach((precaution, i) => {
       this.stretchingPrecautionRepository.createStretchingPrecaution({
         stretchingId: newStretching.id,
         order: i + 1,
@@ -237,7 +237,7 @@ export class StretchingService {
       });
     });
 
-    request.imageList.forEach((precaution, i) => {
+    request.precautionList.forEach((precaution, i) => {
       this.stretchingPrecautionRepository.createStretchingPrecaution({
         stretchingId: id,
         order: i + 1,
