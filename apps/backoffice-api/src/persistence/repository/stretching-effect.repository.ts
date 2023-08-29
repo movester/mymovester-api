@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { StretchingEffect } from '../entity/stretching-effect.entity';
-import { StretchingEffectType } from '../../common/enum';
+import { StretchingEffectType } from '@app/common/enum';
 
 @Injectable()
 export class StretchingEffectRepository extends Repository<StretchingEffect> {

@@ -2,7 +2,7 @@ import {
   StretchingEffectType,
   StretchingMainCategoryType,
   StretchingSubCategoryType,
-} from '../../common/enum';
+} from '@app/common/enum';
 
 export interface IStretchingDetailDTO {
   id: number;

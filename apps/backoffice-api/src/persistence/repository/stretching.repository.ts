@@ -5,7 +5,7 @@ import {
   StretchingListOrderFilter,
   StretchingMainCategoryType,
   StretchingSubCategoryType,
-} from '../../common/enum';
+} from '@app/common/enum';
 import { getSkipAndTake } from '../../common/util';
 
 @Injectable()

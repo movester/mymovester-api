@@ -5,7 +5,7 @@ import {
   StretchingListOrderFilter,
   StretchingMainCategoryType,
   StretchingSubCategoryType,
-} from '../../common/enum';
+} from '@app/common/enum';
 
 export class GetStretchingListRequest {
   @Transform(({ value }) => toNumber(value, { default: 1, min: 1 }))

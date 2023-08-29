@@ -84,7 +84,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/persistence(|/.*)$": "<rootDir>/libs/persistence/src/$1"
+      "^@app/persistence(|/.*)$": "<rootDir>/libs/persistence/src/$1",
+      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1"
     }
   }
 }

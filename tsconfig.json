@@ -24,6 +24,12 @@
       ],
       "@app/persistence/*": [
         "libs/persistence/src/*"
+      ],
+      "@app/common": [
+        "libs/common/src"
+      ],
+      "@app/common/*": [
+        "libs/common/src/*"
       ]
     }
   }

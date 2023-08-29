@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntityClass } from './base-entity.entity';
 import { Stretching } from './stretching.entity';
-import { StretchingEffectType } from '../../common/enum';
+import { StretchingEffectType } from '@app/common/enum';
 
 @Entity('stretching_effect')
 export class StretchingEffect extends BaseEntityClass {

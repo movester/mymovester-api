@@ -13,7 +13,7 @@ import {
   StretchingEffectType,
   StretchingMainCategoryType,
   StretchingSubCategoryType,
-} from '../../common/enum';
+} from '@app/common/enum';
 
 export class CreateStretchingRequest {
   @IsNotEmpty()

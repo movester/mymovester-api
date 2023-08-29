@@ -8,7 +8,7 @@ import { StretchingTechnique } from './stretching-technique.entity';
 import {
   StretchingMainCategoryType,
   StretchingSubCategoryType,
-} from '../../common/enum';
+} from '@app/common/enum';
 
 @Entity('stretching')
 export class Stretching extends BaseEntityClass {
