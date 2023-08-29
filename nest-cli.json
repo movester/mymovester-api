@@ -1,8 +1,32 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/mymovester-api/src",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/mymovester-api/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/mymovester-api",
+  "projects": {
+    "mymovester-api": {
+      "type": "application",
+      "root": "apps/mymovester-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/mymovester-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/mymovester-api/tsconfig.app.json"
+      }
+    },
+    "backoffice-api": {
+      "type": "application",
+      "root": "apps/backoffice-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/backoffice-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/backoffice-api/tsconfig.app.json"
+      }
+    }
   }
 }
