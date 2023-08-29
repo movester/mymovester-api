@@ -20,17 +20,22 @@ import { GetStretchingListRequest } from './request/get-stretching-list.request'
 import { CreateStretchingResponse } from './response/create-stretching.response';
 import { UpdateStretchingRequest } from './request/update-stretching.request';
 import { UpdateStretchingResponse } from './response/update-stretching.response';
+import { PersistenceService } from '@app/persistence';
 
 @Controller('stretchings')
 export class StretchingController {
   private logger = new Logger('StretchingController');
-  constructor(private stretchingService: StretchingService) {}
+  constructor(
+    private stretchingService: StretchingService,
+    private persistenceService: PersistenceService,
+  ) {}
 
   @Get('/')
   getStretchingList(
     // TODO: query param valid
     @Query() query: GetStretchingListRequest,
   ): Promise<StretchingListResponse> {
+    this.persistenceService.getHello();
     return this.stretchingService.getStretchingList(query);
   }
 
