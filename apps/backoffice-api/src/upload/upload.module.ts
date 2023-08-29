@@ -3,7 +3,7 @@ import { UploadController } from './upload.controller';
 import { UploadService } from './upload.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
-import { multerOptionsFactory } from '../common/multer';
+import { multerOptionsFactory } from '@app/common/multer';
 
 @Module({
   imports: [

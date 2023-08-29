@@ -1,11 +1,11 @@
 import { Transform } from 'class-transformer';
 import { IsEnum, IsInt, IsString, Length } from 'class-validator';
-import { toNumber } from '../../common/cast';
 import {
   StretchingListOrderFilter,
   StretchingMainCategoryType,
   StretchingSubCategoryType,
 } from '@app/common/enum';
+import { toNumber } from '@app/common/cast';
 
 export class GetStretchingListRequest {
   @Transform(({ value }) => toNumber(value, { default: 1, min: 1 }))

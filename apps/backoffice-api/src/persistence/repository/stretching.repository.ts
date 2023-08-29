@@ -6,7 +6,7 @@ import {
   StretchingMainCategoryType,
   StretchingSubCategoryType,
 } from '@app/common/enum';
-import { getSkipAndTake } from '../../common/util';
+import { getSkipAndTake } from '@app/common';
 
 @Injectable()
 export class StretchingRepository extends Repository<Stretching> {
