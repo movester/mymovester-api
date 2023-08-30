@@ -33,7 +33,6 @@ import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
             StretchingEffect,
             StretchingImage,
             StretchingPrecaution,
-            StretchingPrecaution,
             StretchingTechnique,
             Stretching,
             BaseEntityClass,
