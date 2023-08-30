@@ -1,6 +1,6 @@
 import { Length } from 'class-validator';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { BaseEntityClass } from './base-entity.entity';
+import { BaseEntityClass } from '../../base-entity.entity';
 import { StretchingEffect } from './stretching-effect.entity';
 import { StretchingImage } from './stretching-image.entity';
 import { StretchingPrecaution } from './stretching-precaution.entity';

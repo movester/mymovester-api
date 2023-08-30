@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne, JoinColumn } from 'typeorm';
-import { BaseEntityClass } from './base-entity.entity';
+import { BaseEntityClass } from '../../base-entity.entity';
 import { Stretching } from './stretching.entity';
 
-@Entity('stretching_precaution')
-export class StretchingPrecaution extends BaseEntityClass {
+@Entity('stretching_technique')
+export class StretchingTechnique extends BaseEntityClass {
   @Column({
     name: 'stretching_id',
     type: 'int',

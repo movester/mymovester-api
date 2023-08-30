@@ -1,6 +1,6 @@
 import { DataSource, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { StretchingTechnique } from '../entity/stretching-technique.entity';
+import { StretchingTechnique } from '@app/persistence/domain/stretching/entity/stretching-technique.entity';
 
 @Injectable()
 export class StretchingTechniqueRepository extends Repository<StretchingTechnique> {
