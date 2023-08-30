@@ -13,16 +13,16 @@ import { GetStretchingListRequest } from './request/get-stretching-list.request'
 import { CreateStretchingResponse } from './response/create-stretching.response';
 import { UpdateStretchingResponse } from './response/update-stretching.response';
 import { UpdateStretchingRequest } from './request/update-stretching.request';
-import { StretchingRepository } from '../persistence/repository/stretching.repository';
-import { StretchingEffectRepository } from '../persistence/repository/stretching-effect.repository';
-import { StretchingImageRepository } from '../persistence/repository/stretching-image.repository';
-import { StretchingPrecautionRepository } from '../persistence/repository/stretching-precaution.repository';
-import { StretchingTechniqueRepository } from '../persistence/repository/stretching-technique.repository';
 import { StretchingEffect } from '@app/persistence/domain/stretching/entity/stretching-effect.entity';
 import { StretchingImage } from '@app/persistence/domain/stretching/entity/stretching-image.entity';
 import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
 import { StretchingPrecaution } from '@app/persistence/domain/stretching/entity/stretching-precaution.entity';
 import { StretchingTechnique } from '@app/persistence/domain/stretching/entity/stretching-technique.entity';
+import { StretchingRepository } from '@app/persistence/domain/stretching/repository/stretching.repository';
+import { StretchingEffectRepository } from '@app/persistence/domain/stretching/repository/stretching-effect.repository';
+import { StretchingImageRepository } from '@app/persistence/domain/stretching/repository/stretching-image.repository';
+import { StretchingPrecautionRepository } from '@app/persistence/domain/stretching/repository/stretching-precaution.repository';
+import { StretchingTechniqueRepository } from '@app/persistence/domain/stretching/repository/stretching-technique.repository';
 
 @Injectable()
 export class StretchingService {
