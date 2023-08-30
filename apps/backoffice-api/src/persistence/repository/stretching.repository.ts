@@ -1,5 +1,4 @@
 import { DataSource, Repository } from 'typeorm';
-import { Stretching } from '../entity/stretching.entity';
 import { Injectable } from '@nestjs/common';
 import {
   StretchingListOrderFilter,
@@ -7,6 +6,7 @@ import {
   StretchingSubCategoryType,
 } from '@app/common/enum';
 import { getSkipAndTake } from '@app/common';
+import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
 
 @Injectable()
 export class StretchingRepository extends Repository<Stretching> {

@@ -18,11 +18,11 @@ import { StretchingEffectRepository } from '../persistence/repository/stretching
 import { StretchingImageRepository } from '../persistence/repository/stretching-image.repository';
 import { StretchingPrecautionRepository } from '../persistence/repository/stretching-precaution.repository';
 import { StretchingTechniqueRepository } from '../persistence/repository/stretching-technique.repository';
-import { StretchingEffect } from '../persistence/entity/stretching-effect.entity';
-import { Stretching } from '../persistence/entity/stretching.entity';
-import { StretchingImage } from '../persistence/entity/stretching-image.entity';
-import { StretchingTechnique } from '../persistence/entity/stretching-technique.entity';
-import { StretchingPrecaution } from '../persistence/entity/stretching-precaution.entity';
+import { StretchingEffect } from '@app/persistence/domain/stretching/entity/stretching-effect.entity';
+import { StretchingImage } from '@app/persistence/domain/stretching/entity/stretching-image.entity';
+import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
+import { StretchingPrecaution } from '@app/persistence/domain/stretching/entity/stretching-precaution.entity';
+import { StretchingTechnique } from '@app/persistence/domain/stretching/entity/stretching-technique.entity';
 
 @Injectable()
 export class StretchingService {

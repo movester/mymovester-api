@@ -1,9 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { BaseEntityClass } from './base-entity.entity';
+import { Column, Entity, ManyToOne, JoinColumn } from 'typeorm';
+import { BaseEntityClass } from '../../base-entity.entity';
 import { Stretching } from './stretching.entity';
 
-@Entity('stretching_image')
-export class StretchingImage extends BaseEntityClass {
+@Entity('stretching_precaution')
+export class StretchingPrecaution extends BaseEntityClass {
   @Column({
     name: 'stretching_id',
     type: 'int',
@@ -35,10 +35,11 @@ export class StretchingImage extends BaseEntityClass {
   order: number;
 
   @Column({
-    name: 'url',
+    name: 'description',
     type: 'varchar',
-    length: 255,
-    comment: 'url',
+    length: 50,
+    default: '',
+    comment: '설명',
   })
-  url: string;
+  description: string;
 }

@@ -3,12 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UploadModule } from './upload/upload.module';
 import { StretchingModule } from './stretching/stretching.module';
-import { StretchingEffect } from './persistence/entity/stretching-effect.entity';
-import { StretchingImage } from './persistence/entity/stretching-image.entity';
-import { StretchingPrecaution } from './persistence/entity/stretching-precaution.entity';
-import { StretchingTechnique } from './persistence/entity/stretching-technique.entity';
-import { Stretching } from './persistence/entity/stretching.entity';
-import { BaseEntityClass } from './persistence/entity/base-entity.entity';
+import { StretchingEffect } from '@app/persistence/domain/stretching/entity/stretching-effect.entity';
+import { StretchingImage } from '@app/persistence/domain/stretching/entity/stretching-image.entity';
+import { StretchingPrecaution } from '@app/persistence/domain/stretching/entity/stretching-precaution.entity';
+import { StretchingTechnique } from '@app/persistence/domain/stretching/entity/stretching-technique.entity';
+import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
+import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
 
 @Module({
   imports: [
@@ -46,4 +46,4 @@ import { BaseEntityClass } from './persistence/entity/base-entity.entity';
     UploadModule,
   ],
 })
-export class AppModule {}
+export class BackofficeModule {}

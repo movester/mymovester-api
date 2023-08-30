@@ -1,10 +1,9 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { BaseEntityClass } from './base-entity.entity';
+import { BaseEntityClass } from '../../base-entity.entity';
 import { Stretching } from './stretching.entity';
-import { StretchingEffectType } from '@app/common/enum';
 
-@Entity('stretching_effect')
-export class StretchingEffect extends BaseEntityClass {
+@Entity('stretching_image')
+export class StretchingImage extends BaseEntityClass {
   @Column({
     name: 'stretching_id',
     type: 'int',
@@ -12,11 +11,16 @@ export class StretchingEffect extends BaseEntityClass {
   })
   stretchingId: number;
 
-  @ManyToOne(() => Stretching, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-    nullable: false,
-  })
+  @ManyToOne(
+    () => {
+      return Stretching;
+    },
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+      nullable: false,
+    },
+  )
   @JoinColumn({
     name: 'stretching_id',
     referencedColumnName: 'id',
@@ -31,10 +35,10 @@ export class StretchingEffect extends BaseEntityClass {
   order: number;
 
   @Column({
-    name: 'effect',
+    name: 'url',
     type: 'varchar',
-    length: 50,
-    comment: '효과',
+    length: 255,
+    comment: 'url',
   })
-  effect: StretchingEffectType;
+  url: string;
 }
