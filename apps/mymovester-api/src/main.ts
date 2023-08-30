@@ -8,13 +8,14 @@ import { MymovesterModule } from './mymovester.module';
 async function bootstrap() {
   const app = await NestFactory.create(MymovesterModule);
 
+  const port = process.env.MYMOVESTER_PORT;
   Sentry.init({
     dsn: process.env.SENTRY_DSN_MYMOVESTER,
   });
   app.useGlobalInterceptors(new SentryInterceptor());
   app.useGlobalInterceptors(new WebhookInterceptor());
 
-  await app.listen(3001);
-  Logger.log(`🚀mymovester-api running on port 3001`);
+  await app.listen(port);
+  Logger.log(`🚀mymovester-api running on port ${port}`);
 }
 bootstrap();

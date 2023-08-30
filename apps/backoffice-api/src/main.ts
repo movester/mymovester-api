@@ -15,7 +15,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new SentryInterceptor());
   app.useGlobalInterceptors(new WebhookInterceptor());
 
-  const port = process.env.PORT;
+  const port = process.env.BACKOFFICE_PORT;
 
   await app.listen(port);
   Logger.log(`🚀backoffice-api running on port ${port}`);
