@@ -28,4 +28,4 @@ jobs:
     - name: install dependencies
       run: npm ci
     - name: project build
-      run: npm build
+      run: npm run build
