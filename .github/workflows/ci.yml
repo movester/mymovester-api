@@ -50,5 +50,7 @@ jobs:
           REPOSITORY: my-movester-dev
           IMAGE_TAG: ${{ github.sha }}
       run: |
-          docker build --platform=linux/amd64-t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker buildx build --platform=linux/amd64 -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
