@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { StretchingImage } from '@app/persistence/domain/stretching/entity/stretching-image.entity';
 
 @Injectable()
@@ -21,5 +21,17 @@ export class StretchingImageRepository extends Repository<StretchingImage> {
 
     await this.save(stretchingImage);
     return stretchingImage;
+  }
+
+  async findOneRepresentativeStretchingImage(
+    stretchingId: number,
+  ): Promise<StretchingImage> {
+    return this.findOneOrFail({
+      where: { stretchingId, order: 1 },
+    }).catch(() => {
+      throw new NotFoundException(
+        `대표 스트레칭 이미지가 존재하지 않습니다. id: ${stretchingId}`,
+      );
+    });
   }
 }
