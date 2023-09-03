@@ -124,4 +124,8 @@ export class Stretching extends BaseEntityClass {
     },
   )
   stretchingTechnique: StretchingTechnique[];
+
+  public addView() {
+    this.views++;
+  }
 }
