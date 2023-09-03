@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ "develop" ]
 
+run-name: Workflow Run commit by ${{github.actor}}
+
 # monorepo package 세팅 필요
 
 jobs:
