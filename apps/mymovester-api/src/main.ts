@@ -7,6 +7,7 @@ import { MymovesterModule } from './mymovester.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(MymovesterModule);
+  app.setGlobalPrefix('api/v1');
 
   const port = process.env.MYMOVESTER_PORT;
   Sentry.init({

@@ -65,6 +65,10 @@ export class StretchingService {
         where: { stretchingId: id },
       });
 
+    // 스트레칭 상세 조회시 조회수 1 up
+    stretching.addView();
+    stretching.save();
+
     const StretchingDetailResponseParam: IStretchingDetailDTO = {
       id: stretching.id,
       title: stretching.title,
@@ -73,10 +77,6 @@ export class StretchingService {
       collect: stretching.collect,
       set: stretching.set,
       videoUrl: stretching.videoUrl,
-      views: stretching.views,
-      adminId: stretching.adminId,
-      createdAt: stretching.createdAt,
-      updatedAt: stretching.updatedAt,
       effectList: effectList.map((stretchingEffect) => stretchingEffect.effect),
       imageList: imageList.map((stretchingImage) => stretchingImage.url),
       techniqueList: techniqueList.map((technique) => technique.description),
