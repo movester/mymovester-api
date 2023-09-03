@@ -47,7 +47,7 @@ export class StretchingService {
     request: GetStretchingListRequest,
   ): Promise<StretchingListResponse> {
     const [stretchings, total] =
-      await this.stretchingRepository.findStretchingList(request);
+      await this.stretchingRepository.findStretchingListForBackoffice(request);
 
     const stretchingList: IStretchingListDTO[] = await Promise.all(
       stretchings.map(async (stretching) => {

@@ -14,6 +14,11 @@ import {
   IStretchingDetailDTO,
   StretchingDetailResponse,
 } from './response/stretching-detail.response';
+import { GetStretchingListRequest } from './request/get-stretching-list.request';
+import {
+  IStretchingListDTO,
+  StretchingListResponse,
+} from './response/stretching-list.response';
 
 @Injectable()
 export class StretchingService {
@@ -86,5 +91,37 @@ export class StretchingService {
     };
 
     return new StretchingDetailResponse(StretchingDetailResponseParam);
+  }
+
+  async getStretchingList(
+    request: GetStretchingListRequest,
+  ): Promise<StretchingListResponse> {
+    const [stretchings, total] =
+      await this.stretchingRepository.findStretchingListForProduct(request);
+
+    const stretchingList: IStretchingListDTO[] = await Promise.all(
+      stretchings.map(async (stretching) => {
+        const stretchingEffect: StretchingEffect =
+          await this.stretchingEffectRepository.findOneRepresentativeStretchingEffect(
+            stretching.id,
+          );
+
+        const stretchingImage: StretchingImage =
+          await this.stretchingImageRepository.findOneRepresentativeStretchingImage(
+            stretching.id,
+          );
+
+        return {
+          id: stretching.id,
+          title: stretching.title,
+          mainCategory: stretching.mainCategory,
+          subCategory: stretching.subCategory,
+          createdAt: stretching.createdAt,
+          effect: stretchingEffect.effect,
+          imageUrl: stretchingImage.url,
+        };
+      }),
+    );
+    return new StretchingListResponse(total, stretchingList);
   }
 }
