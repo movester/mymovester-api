@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { StretchingEffectType } from '@app/common/enum';
 import { StretchingEffect } from '@app/persistence/domain/stretching/entity/stretching-effect.entity';
 
@@ -22,5 +22,17 @@ export class StretchingEffectRepository extends Repository<StretchingEffect> {
 
     await this.save(stretchingEffect);
     return stretchingEffect;
+  }
+
+  async findOneRepresentativeStretchingEffect(
+    stretchingId: number,
+  ): Promise<StretchingEffect> {
+    return this.findOneOrFail({
+      where: { stretchingId, order: 1 },
+    }).catch(() => {
+      throw new NotFoundException(
+        `대표 스트레칭 효과가 존재하지 않습니다. id: ${stretchingId}`,
+      );
+    });
   }
 }

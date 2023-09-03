@@ -24,4 +24,5 @@ export enum StretchingEffectType {
 export enum StretchingListOrderFilter {
   RECENT = 'RECENT',
   POPULAR = 'POPULAR',
+  VIEW = 'VIEW',
 }
