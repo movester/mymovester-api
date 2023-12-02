@@ -1,7 +1,7 @@
-import { Controller, Param, UseGuards, Get } from '@nestjs/common';
+import { Controller, Param, UseGuards, Get, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthGuard } from '@nestjs/passport';
 import { LoginResponse } from './response/login.response';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -11,5 +11,11 @@ export class AuthController {
   // @UseGuards(AuthGuard('kakao'))
   async kakaoLogin(@Param('code') code: string): Promise<LoginResponse> {
     return this.authService.kakaoLogin(code);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 }
