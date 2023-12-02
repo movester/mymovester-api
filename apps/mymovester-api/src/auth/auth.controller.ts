@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Request, Req, Res } from '@nestjs/common';
+import { Controller, UseGuards, Get, Request, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginResponse } from './response/login.response';
 import { JwtAuthGuard } from './jwt-auth.guard';
