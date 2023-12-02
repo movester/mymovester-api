@@ -152,7 +152,7 @@ export class StretchingService {
         where: { stretchingId: id },
       });
 
-    const StretchingDetailResponseParam: IStretchingDetailDTO = {
+    const stretchingDetailResponseParam: IStretchingDetailDTO = {
       id: stretching.id,
       title: stretching.title,
       mainCategory: stretching.mainCategory,
@@ -172,7 +172,7 @@ export class StretchingService {
       ),
     };
 
-    return new StretchingDetailResponse(StretchingDetailResponseParam);
+    return new StretchingDetailResponse(stretchingDetailResponseParam);
   }
 
   // TODO: 트랜잭션 추가

@@ -8,6 +8,8 @@ import { StretchingPrecaution } from '@app/persistence/domain/stretching/entity/
 import { StretchingTechnique } from '@app/persistence/domain/stretching/entity/stretching-technique.entity';
 import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
 import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
       },
     }),
     StretchingModule,
+    AuthModule,
+    UserModule,
   ],
 })
 export class MymovesterModule {}
