@@ -12,7 +12,7 @@ export class SentryInterceptor implements NestInterceptor {
   intercept(_: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       catchError((error) => {
-        // Sentry.captureException(error);
+        Sentry.captureException(error);
         return null;
       }),
     );

@@ -11,10 +11,7 @@ export class AuthController {
 
   @Get('login/kakao')
   @UseGuards(AuthGuard('kakao'))
-  async kakaoLogin(
-    @Req() req: Request & IOAuthUser,
-    @Res() res: Response,
-  ): Promise<LoginResponse> {
+  async kakaoLogin(@Req() req: Request & IOAuthUser): Promise<LoginResponse> {
     return this.authService.kakaoLogin({ req });
   }
 
