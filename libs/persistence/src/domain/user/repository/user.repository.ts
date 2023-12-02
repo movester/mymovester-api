@@ -1,6 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { User } from '../entity/user.entity';
+import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { SocialType } from '@app/common';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -9,14 +10,16 @@ export class UserRepository extends Repository<User> {
   }
 
   async createUser(request: {
-    email: string;
-    nickName: string;
     socialUid: string;
+    socialType: SocialType;
+    name: string;
+    email: string;
   }): Promise<User> {
     const user: User = this.create({
       email: request.email,
-      nickName: request.nickName,
+      nickName: request.name,
       socialUid: request.socialUid,
+      socialType: request.socialType,
     });
 
     await this.save(user);

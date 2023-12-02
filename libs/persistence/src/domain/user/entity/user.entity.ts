@@ -48,7 +48,6 @@ export class User extends BaseEntityClass {
   @Column({
     name: 'birth_at',
     type: 'timestamp',
-    length: 255,
     comment: '생년월일',
     nullable: false,
   })

@@ -10,6 +10,7 @@ import { Stretching } from '@app/persistence/domain/stretching/entity/stretching
 import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { User } from '@app/persistence/domain/user/entity/user.entity';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { UserModule } from './user/user.module';
             StretchingPrecaution,
             StretchingTechnique,
             Stretching,
+            User,
             BaseEntityClass,
           ],
           synchronize: configService.get<boolean>('DB_SYNCHRONIZE'),

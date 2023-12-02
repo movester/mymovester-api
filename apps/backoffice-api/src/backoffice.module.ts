@@ -9,6 +9,7 @@ import { StretchingPrecaution } from '@app/persistence/domain/stretching/entity/
 import { StretchingTechnique } from '@app/persistence/domain/stretching/entity/stretching-technique.entity';
 import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
 import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
+import { User } from '@app/persistence/domain/user/entity/user.entity';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
             StretchingPrecaution,
             StretchingTechnique,
             Stretching,
+            User,
             BaseEntityClass,
           ],
           synchronize: configService.get<boolean>('DB_SYNCHRONIZE'),
