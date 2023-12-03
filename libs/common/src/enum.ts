@@ -26,3 +26,13 @@ export enum StretchingListOrderFilter {
   POPULAR = 'POPULAR',
   VIEW = 'VIEW',
 }
+
+export enum SocialType {
+  KAKAO = 'KAKAO',
+}
+
+export enum Gender {
+  UNKNOWN = 'UNKNOWN',
+  FEMAIL = 'FEMAIL',
+  MAIL = 'MAIL',
+}
