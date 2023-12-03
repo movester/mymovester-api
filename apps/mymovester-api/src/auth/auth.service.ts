@@ -4,6 +4,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ILoginResponseDTO, LoginResponse } from './response/login.response';
 import { UserService } from '../user/user.service';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { KakaoService } from 'apps/mymovester-api/src/auth/kakao.service';
+import { SocialType } from '@app/common';
 
 interface JwtToken {
   accessToken: string;
@@ -16,18 +18,31 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private kakaoService: KakaoService,
   ) {}
   KAKAO_KEY = process.env.KAKAO_KEY || null;
 
-  async kakaoLogin({ req }): Promise<LoginResponse> {
-    // kakaoUid를 기반으로 가가입 유저 valid
-    let user: User = await this.userService.getUserBySocialUid(
-      req.user.socialUid,
+  async kakaoLogin({ body }): Promise<LoginResponse> {
+    const {socialUid} = body;
+    const userProperties = await this.kakaoService.getUserProperties(
+      socialUid,
     );
+
+    // kakaoUid를 기반으로 기가입 유저 valid
+    let user: User = await this.userService.getUserBySocialUid(
+      userProperties.id.toString()
+    );
+
     if (user == null) {
       // 회원가입
-      user = await this.userService.createUser(req.user);
+      user = await this.userService.createUser({
+        socialUid: userProperties.id.toString(),
+        socialType: SocialType.KAKAO,
+        name: userProperties.kakao_account.profile.nickname,
+        email: userProperties.kakao_account.email,
+      });
     }
+
     const { accessToken, refreshToken } = await this.getJwtToken(user.email);
 
     const loginResponseParam: ILoginResponseDTO = {
@@ -37,6 +52,7 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+
     return new LoginResponse(loginResponseParam);
   }
 

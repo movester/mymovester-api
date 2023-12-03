@@ -5,8 +5,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from '@app/persistence/domain/user/repository/user.repository';
-import { KakaoStrategy } from './kakao.strategy';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { KakaoService } from 'apps/mymovester-api/src/auth/kakao.service';
 
 @Module({
   imports: [
@@ -16,6 +16,6 @@ import { User } from '@app/persistence/domain/user/entity/user.entity';
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, KakaoStrategy, UserRepository],
+  providers: [AuthService, UserService, KakaoService, UserRepository],
 })
 export class AuthModule {}
