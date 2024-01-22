@@ -1,39 +1,28 @@
-import { Controller, UseGuards, Get, Request, Post, Body } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Delete} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginResponse } from './response/login.response';
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { SocialType } from '@app/common';
 import { KakaoLoginRequest } from './request/kakao-login.request';
+import { UserRequest } from './request/kakao-login.request';
+import { UserDeco } from 'apps/mymovester-api/src/shared/decorator/user.decorator';
+import { IUser } from 'apps/mymovester-api/src/user/user.interface';
 
-@Controller('auth')
+@Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('login/kakao')
+  @Post('/login/kakao')
   async kakaoLogin(
     @Body() body: KakaoLoginRequest,
   ): Promise<LoginResponse> {
     return this.authService.kakaoLogin({ body });
   }
 
-  // @Get('login/kakao/callback')
-  // @UseGuards(AuthGuard('kakao'))
-  // async kakaoCallback(@Req() req): Promise<LoginResponse> {
-  //   return this.authService.kakaoLogin({ req });
-  // }
-
+  @Delete('/user')
   @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  async kakaoUnlink(
+    @UserDeco() user: IUser,
+  ): Promise<void> {
+    return this.authService.kakaoUnlink(user.id);
   }
-}
-
-export interface IOAuthUser {
-  user: {
-    socialUid: string;
-    socialType: SocialType;
-    name: string;
-    email: string;
-  };
 }

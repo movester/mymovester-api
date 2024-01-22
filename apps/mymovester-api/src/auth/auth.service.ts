@@ -6,11 +6,7 @@ import { UserService } from '../user/user.service';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
 import { KakaoService } from 'apps/mymovester-api/src/auth/kakao.service';
 import { SocialType } from '@app/common';
-
-interface JwtToken {
-  accessToken: string;
-  refreshToken: string;
-}
+import { JwtToken } from 'apps/mymovester-api/src/auth/auth.interface';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +16,6 @@ export class AuthService {
     private configService: ConfigService,
     private kakaoService: KakaoService,
   ) {}
-  KAKAO_KEY = process.env.KAKAO_KEY || null;
 
   async kakaoLogin({ body }): Promise<LoginResponse> {
     const {socialUid} = body;
@@ -43,7 +38,7 @@ export class AuthService {
       });
     }
 
-    const { accessToken, refreshToken } = await this.getJwtToken(user.email);
+    const { accessToken, refreshToken } = await this.getJwtToken(user.id, user.email);
 
     const loginResponseParam: ILoginResponseDTO = {
       id: user.id,
@@ -56,8 +51,14 @@ export class AuthService {
     return new LoginResponse(loginResponseParam);
   }
 
-  private async getAccessToken(email: string): Promise<string> {
-    const payload = { email };
+  async kakaoUnlink(id: number): Promise<void> {
+    const user: User = await this.userService.getUserV2(id);
+    await this.kakaoService.unlink(user.socialUid);
+    await this.userService.deleteUser(user.id);
+  }
+
+  private async getAccessToken(id: number, email: string): Promise<string> {
+    const payload = { id, email };
     return this.jwtService.sign(payload, {
       secret: this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET'),
       expiresIn: this.configService.get<string>('JWT_ACCESS_TOKEN_EXPIRES_IN'),
@@ -72,8 +73,8 @@ export class AuthService {
     });
   }
 
-  async getJwtToken(email: string): Promise<JwtToken> {
-    const accessToken = await this.getAccessToken(email);
+  async getJwtToken(id, email: string): Promise<JwtToken> {
+    const accessToken = await this.getAccessToken(id, email);
     const refreshToken = await this.getRefreshToken(email);
     return { accessToken, refreshToken };
   }

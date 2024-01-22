@@ -65,7 +65,7 @@ export class User extends BaseEntityClass {
   @Column({
     name: 'deleted_at',
     type: 'timestamp',
-    nullable: false,
+    nullable: true,
   })
   deletedAt: Date;
 }

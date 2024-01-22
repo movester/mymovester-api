@@ -35,4 +35,16 @@ export class UserService {
     }
     return user;
   }
+
+  async getUserV2(id: number): Promise<User> {
+    const user: User = await this.userRepository.findOne({
+      where: { id },
+    });
+
+    return user;
+  }
+
+  async deleteUser(id: number): Promise<void> {
+    await this.userRepository.deleteUser(id);
+  }
 }
