@@ -7,6 +7,7 @@ import { User } from '@app/persistence/domain/user/entity/user.entity';
 import { KakaoService } from 'apps/mymovester-api/src/auth/kakao.service';
 import { SocialType } from '@app/common';
 import { JwtToken } from 'apps/mymovester-api/src/auth/auth.interface';
+import { IUserDetail } from 'apps/mymovester-api/src/user/user.interface';
 
 @Injectable()
 export class AuthService {
@@ -52,7 +53,7 @@ export class AuthService {
   }
 
   async kakaoUnlink(id: number): Promise<void> {
-    const user: User = await this.userService.getUserV2(id);
+    const user: IUserDetail = await this.userService.getUser(id);
     await this.kakaoService.unlink(user.socialUid);
     await this.userService.deleteUser(user.id);
   }

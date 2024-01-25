@@ -63,6 +63,15 @@ export class User extends BaseEntityClass {
   gender: Gender;
 
   @Column({
+    name: 'profile_url',
+    type: 'varchar',
+    length: 255,
+    comment: '회원프로필 이미지 URL',
+    nullable: true,
+  })
+  profileUrl: string;
+
+  @Column({
     name: 'deleted_at',
     type: 'timestamp',
     nullable: true,
