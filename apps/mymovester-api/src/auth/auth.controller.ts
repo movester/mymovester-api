@@ -3,7 +3,6 @@ import { AuthService } from './auth.service';
 import { LoginResponse } from './response/login.response';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { KakaoLoginRequest } from './request/kakao-login.request';
-import { UserRequest } from './request/kakao-login.request';
 import { UserDeco } from 'apps/mymovester-api/src/shared/decorator/user.decorator';
 import { IUser } from 'apps/mymovester-api/src/user/user.interface';
 

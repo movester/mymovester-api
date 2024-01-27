@@ -1,8 +1,9 @@
 import { SocialType } from '@app/common';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
 import { UserRepository } from '@app/persistence/domain/user/repository/user.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserResponse } from 'apps/mymovester-api/src/user/response/user.response';
 
 @Injectable()
 export class UserService {
@@ -26,22 +27,30 @@ export class UserService {
     return await this.userRepository.createUser(user);
   }
 
-  async getUser(): Promise<User> {
-    const user: User = await this.userRepository.findOne({
-      where: { email: '나현' },
-    });
-    if (user == null) {
-      console.log('null 이래!!');
-    }
-    return user;
-  }
-
-  async getUserV2(id: number): Promise<User> {
+  async getUser(id: number): Promise<UserResponse> {
     const user: User = await this.userRepository.findOne({
       where: { id },
     });
 
-    return user;
+    if (user === null) {
+      throw new NotFoundException(
+        `존재하지 않는 회원입니다 (문의 mus2021mus@gmail.com)`,
+      );
+    }
+
+    return new UserResponse({
+      id : user.id,
+      creatdAt : user.createdAt,
+      email : user.email,
+      nickName : user.nickName,
+      socialType : user.socialType,
+      socialUid : user.socialUid,
+      phoneNumber : user.phoneNumber,
+      birthAt : user.birthAt,
+      gender : user.gender,
+      deletedAt : user.deletedAt,
+      profileUrl: user.profileUrl,
+    });
   }
 
   async deleteUser(id: number): Promise<void> {

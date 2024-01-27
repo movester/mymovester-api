@@ -21,7 +21,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(null, "사용자 정보가 유효하지 않습니다");
     }
 
     try {
@@ -30,7 +30,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       });
       request['user'] = payload;
     } catch {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(null, "사용자 정보가 유효하지 않습니다");
     }
 
     return true;

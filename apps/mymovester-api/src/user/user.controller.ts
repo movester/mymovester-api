@@ -1,13 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { JwtAuthGuard } from 'apps/mymovester-api/src/auth/jwt-auth.guard';
+import { UserDeco } from 'apps/mymovester-api/src/shared/decorator/user.decorator';
+import { IUser } from 'apps/mymovester-api/src/user/user.interface';
+import { UserResponse } from 'apps/mymovester-api/src/user/response/user.response';
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Get('/')
-  getUser(): Promise<User> {
-    return this.userService.getUser();
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async getUser(
+    @UserDeco() user: IUser
+  ): Promise<UserResponse> {
+    return this.userService.getUser(user.id);
   }
 }
