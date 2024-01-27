@@ -25,4 +25,10 @@ export class UserRepository extends Repository<User> {
     await this.save(user);
     return user;
   }
+
+  async deleteUser(userId: number): Promise<void> {
+    this.update(userId, {
+      deletedAt: new Date(),
+    })
+  }
 }

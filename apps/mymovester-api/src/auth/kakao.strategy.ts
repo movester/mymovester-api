@@ -8,7 +8,7 @@ import { Strategy } from 'passport-kakao';
 export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
   constructor(private readonly configService: ConfigService) {
     super({
-      clientID: configService.get<string>('KAKAO_KEY'),
+      clientID: configService.get<string>('KAKAO_REST_API_KEY'),
       callbackURL: `${configService.get<string>(
         'API_URL',
       )}/auth/login/kakao/callback`,
