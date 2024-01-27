@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   HttpCode,
   Param,
   ParseIntPipe,
@@ -24,6 +25,19 @@ export class LikeController {
     @UserDeco() user: IUser,
   ): Promise<DefaultResponse> {
     return this.likeService.createUserStretchingLike({
+      userId: user.id,
+      stretchingId: id,
+    });
+  }
+
+  @Delete('/:id/like')
+  @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
+  deleteUserStretchingLike(
+    @Param('id', ParseIntPipe) id: number,
+    @UserDeco() user: IUser,
+  ): Promise<DefaultResponse> {
+    return this.likeService.deleteUserStretchingLike({
       userId: user.id,
       stretchingId: id,
     });

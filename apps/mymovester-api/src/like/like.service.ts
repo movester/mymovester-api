@@ -1,4 +1,8 @@
-import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserStretchingLikeRepository } from '@app/persistence/domain/like/repository/user-stretching-like.repository';
 import { UserStretchingLike } from '@app/persistence/domain/like/entity/user-stretching-like.entity';
@@ -28,6 +32,26 @@ export class LikeService {
       userId: request.userId,
       stretchingId: request.stretchingId,
     });
+
+    return new DefaultResponse({
+      isSuccess: true,
+    });
+  }
+
+  async deleteUserStretchingLike(request: {
+    userId: number;
+    stretchingId: number;
+  }): Promise<DefaultResponse> {
+    const result =
+      await this.userStretchingLikeRepository.deleteByUserIdAndStretchingId(
+        request,
+      );
+
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        `좋아요 하지 않은 스트레칭입니다. id: ${request.stretchingId}`,
+      );
+    }
 
     return new DefaultResponse({
       isSuccess: true,

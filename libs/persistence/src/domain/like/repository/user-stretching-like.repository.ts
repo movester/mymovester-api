@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, DeleteResult, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { UserStretchingLike } from '../entity/user-stretching-like.entity';
 
@@ -31,5 +31,19 @@ export class UserStretchingLikeRepository extends Repository<UserStretchingLike>
         stretchingId: request.stretchingId,
       })
       .getOne();
+  }
+
+  async deleteByUserIdAndStretchingId(request: {
+    userId: number;
+    stretchingId: number;
+  }): Promise<DeleteResult> {
+    return this.createQueryBuilder()
+      .delete()
+      .from(UserStretchingLike)
+      .where('userId = :userId', { userId: request.userId })
+      .andWhere('stretchingId = :stretchingId', {
+        stretchingId: request.stretchingId,
+      })
+      .execute();
   }
 }
