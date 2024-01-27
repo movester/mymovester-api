@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UploadModule } from './upload/upload.module';
 import { StretchingModule } from './stretching/stretching.module';
 import { StretchingEffect } from '@app/persistence/domain/stretching/entity/stretching-effect.entity';
 import { StretchingImage } from '@app/persistence/domain/stretching/entity/stretching-image.entity';
@@ -10,6 +9,7 @@ import { StretchingTechnique } from '@app/persistence/domain/stretching/entity/s
 import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
 import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { UploadModule } from '@app/common/upload/upload.module';
 
 @Module({
   imports: [

@@ -11,6 +11,7 @@ import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { UploadModule } from '@app/common/upload/upload.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { User } from '@app/persistence/domain/user/entity/user.entity';
     StretchingModule,
     AuthModule,
     UserModule,
+    UploadModule,
   ],
 })
 export class MymovesterModule {}
