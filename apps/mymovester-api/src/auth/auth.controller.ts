@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Body, Delete} from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Delete } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginResponse } from './response/login.response';
 import { JwtAuthGuard } from './jwt-auth.guard';
@@ -11,17 +11,13 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/login/kakao')
-  async kakaoLogin(
-    @Body() body: KakaoLoginRequest,
-  ): Promise<LoginResponse> {
+  async kakaoLogin(@Body() body: KakaoLoginRequest): Promise<LoginResponse> {
     return this.authService.kakaoLogin({ body });
   }
 
   @Delete('/user')
   @UseGuards(JwtAuthGuard)
-  async kakaoUnlink(
-    @UserDeco() user: IUser,
-  ): Promise<void> {
+  async kakaoUnlink(@UserDeco() user: IUser): Promise<void> {
     return this.authService.kakaoUnlink(user.id);
   }
 }
