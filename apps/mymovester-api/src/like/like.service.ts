@@ -7,12 +7,30 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserStretchingLikeRepository } from '@app/persistence/domain/like/repository/user-stretching-like.repository';
 import { UserStretchingLike } from '@app/persistence/domain/like/entity/user-stretching-like.entity';
 import { DefaultResponse } from '@app/common/response/default.response';
+import { GetUserStretchingLikeListRequest } from './request/get-user-stretching-like-request';
+import { IStretchingListDTO } from '../stretching/response/stretching-list.response';
+import { UserStretchingLikeListResponse } from '../stretching/response/user-stretching-like-list.response';
+import { StretchingEffect } from '@app/persistence/domain/stretching/entity/stretching-effect.entity';
+import { StretchingRepository } from '@app/persistence/domain/stretching/repository/stretching.repository';
+import { StretchingEffectRepository } from '@app/persistence/domain/stretching/repository/stretching-effect.repository';
+import { StretchingImageRepository } from '@app/persistence/domain/stretching/repository/stretching-image.repository';
+import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
+import { StretchingImage } from '@app/persistence/domain/stretching/entity/stretching-image.entity';
 
 @Injectable()
 export class LikeService {
   constructor(
     @InjectRepository(UserStretchingLikeRepository)
     private userStretchingLikeRepository: UserStretchingLikeRepository,
+
+    @InjectRepository(StretchingRepository)
+    private stretchingRepository: StretchingRepository,
+
+    @InjectRepository(StretchingEffectRepository)
+    private stretchingEffectRepository: StretchingEffectRepository,
+
+    @InjectRepository(StretchingImageRepository)
+    private stretchingImageRepository: StretchingImageRepository,
   ) {}
 
   // TODO: 트랜잭션
@@ -56,5 +74,56 @@ export class LikeService {
     return new DefaultResponse({
       isSuccess: true,
     });
+  }
+
+  async getUserStretchingLikeList(
+    request: GetUserStretchingLikeListRequest,
+    userId: number,
+  ): Promise<UserStretchingLikeListResponse> {
+    const [userStretchingLikes, userStretchingLikesTotal] =
+      await this.userStretchingLikeRepository.findUserStretchingLikeListForProduct(
+        {
+          page: request.page,
+          size: request.size,
+          userId,
+        },
+      );
+
+    const stretchings: Stretching[] = await Promise.all(
+      userStretchingLikes.map(
+        async (userStretchingLike) =>
+          await this.stretchingRepository.findOne({
+            where: { id: userStretchingLike.stretchingId },
+          }),
+      ),
+    );
+
+    const stretchingList: IStretchingListDTO[] = await Promise.all(
+      stretchings.map(async (stretching) => {
+        const stretchingEffect: StretchingEffect =
+          await this.stretchingEffectRepository.findOneRepresentativeStretchingEffect(
+            stretching.id,
+          );
+
+        const stretchingImage: StretchingImage =
+          await this.stretchingImageRepository.findOneRepresentativeStretchingImage(
+            stretching.id,
+          );
+
+        return {
+          id: stretching.id,
+          title: stretching.title,
+          mainCategory: stretching.mainCategory,
+          subCategory: stretching.subCategory,
+          createdAt: stretching.createdAt,
+          effect: stretchingEffect.effect,
+          imageUrl: stretchingImage.url,
+        };
+      }),
+    );
+    return new UserStretchingLikeListResponse(
+      userStretchingLikesTotal,
+      stretchingList,
+    );
   }
 }

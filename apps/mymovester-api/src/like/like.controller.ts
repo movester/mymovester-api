@@ -1,10 +1,12 @@
 import {
   Controller,
   Delete,
+  Get,
   HttpCode,
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { LikeService } from './like.service';
@@ -12,12 +14,13 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserDeco } from '../shared/decorator/user.decorator';
 import { IUser } from '../user/user.interface';
 import { DefaultResponse } from '@app/common/response/default.response';
+import { GetUserStretchingLikeListRequest } from './request/get-user-stretching-like-request';
+import { UserStretchingLikeListResponse } from '../stretching/response/user-stretching-like-list.response';
 
-@Controller('stretchings')
+@Controller('like')
 export class LikeController {
   constructor(private likeService: LikeService) {}
-
-  @Post('/:id/like')
+  @Post('/stretching/:id')
   @HttpCode(201)
   @UseGuards(JwtAuthGuard)
   createUserStretchingLike(
@@ -30,7 +33,7 @@ export class LikeController {
     });
   }
 
-  @Delete('/:id/like')
+  @Delete('/stretching/:id')
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   deleteUserStretchingLike(
@@ -41,5 +44,15 @@ export class LikeController {
       userId: user.id,
       stretchingId: id,
     });
+  }
+
+  @Get('/stretching')
+  @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
+  getUserStretchingLike(
+    @Query() query: GetUserStretchingLikeListRequest,
+    @UserDeco() user: IUser,
+  ): Promise<UserStretchingLikeListResponse> {
+    return this.likeService.getUserStretchingLikeList(query, user.id);
   }
 }

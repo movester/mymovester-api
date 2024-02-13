@@ -1,6 +1,7 @@
 import { DataSource, DeleteResult, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { UserStretchingLike } from '../entity/user-stretching-like.entity';
+import { getSkipAndTake } from '@app/common/util';
 
 @Injectable()
 export class UserStretchingLikeRepository extends Repository<UserStretchingLike> {
@@ -45,5 +46,21 @@ export class UserStretchingLikeRepository extends Repository<UserStretchingLike>
         stretchingId: request.stretchingId,
       })
       .execute();
+  }
+
+  async findUserStretchingLikeListForProduct(request: {
+    page: number;
+    size: number;
+    userId: number;
+  }): Promise<[UserStretchingLike[], number]> {
+    const { skip, take } = getSkipAndTake(request.page || 1, 10);
+
+    const query = this.createQueryBuilder('userStretchingLike')
+      .where('userStretchingLike.userId = :userId', { userId: request.userId })
+      .skip(skip)
+      .take(take)
+      .orderBy('userStretchingLike.id', 'DESC');
+
+    return query.getManyAndCount();
   }
 }
