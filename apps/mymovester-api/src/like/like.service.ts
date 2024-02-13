@@ -118,6 +118,7 @@ export class LikeService {
           createdAt: stretching.createdAt,
           effect: stretchingEffect.effect,
           imageUrl: stretchingImage.url,
+          isLike: true,
         };
       }),
     );
@@ -125,5 +126,14 @@ export class LikeService {
       userStretchingLikesTotal,
       stretchingList,
     );
+  }
+
+  async getUserStretchingLikeByUserIdAndStretchingId(
+    userId: number,
+    stretchingId: number,
+  ): Promise<UserStretchingLike> {
+    return await this.userStretchingLikeRepository.findOne({
+      where: { userId, stretchingId },
+    });
   }
 }

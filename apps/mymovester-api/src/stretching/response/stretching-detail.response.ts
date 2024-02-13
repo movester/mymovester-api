@@ -16,6 +16,7 @@ export interface IStretchingDetailDTO {
   set: number;
   precautionList: string[];
   videoUrl: string;
+  isLike: boolean;
 }
 
 export class StretchingDetailResponse implements IStretchingDetailDTO {
@@ -30,6 +31,7 @@ export class StretchingDetailResponse implements IStretchingDetailDTO {
   set: number;
   precautionList: string[];
   videoUrl: string;
+  isLike: boolean;
 
   constructor(stretchingDetail: IStretchingDetailDTO) {
     this.id = stretchingDetail.id;
@@ -43,5 +45,6 @@ export class StretchingDetailResponse implements IStretchingDetailDTO {
     this.set = stretchingDetail.set;
     this.precautionList = stretchingDetail.precautionList;
     this.videoUrl = stretchingDetail.videoUrl;
+    this.isLike = stretchingDetail.isLike;
   }
 }

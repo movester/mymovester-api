@@ -19,6 +19,7 @@ import {
   IStretchingListDTO,
   StretchingListResponse,
 } from './response/stretching-list.response';
+import { LikeService } from '../like/like.service';
 
 @Injectable()
 export class StretchingService {
@@ -37,9 +38,14 @@ export class StretchingService {
 
     @InjectRepository(StretchingTechniqueRepository)
     private stretchingTechniqueRepository: StretchingTechniqueRepository,
+
+    private likeService: LikeService,
   ) {}
 
-  async getStretchingById(id: number): Promise<StretchingDetailResponse> {
+  async getStretchingById(
+    id: number,
+    userId?: number,
+  ): Promise<StretchingDetailResponse> {
     const stretching: Stretching = await this.stretchingRepository.findOne({
       where: { id },
     });
@@ -74,6 +80,16 @@ export class StretchingService {
     stretching.addView();
     stretching.save();
 
+    let isLike = false;
+    if (userId) {
+      const userStretchingLike =
+        await this.likeService.getUserStretchingLikeByUserIdAndStretchingId(
+          userId,
+          stretching.id,
+        );
+      isLike = userStretchingLike !== null;
+    }
+
     const StretchingDetailResponseParam: IStretchingDetailDTO = {
       id: stretching.id,
       title: stretching.title,
@@ -88,6 +104,7 @@ export class StretchingService {
       precautionList: precautionList.map(
         (precaution) => precaution.description,
       ),
+      isLike: isLike,
     };
 
     return new StretchingDetailResponse(StretchingDetailResponseParam);
