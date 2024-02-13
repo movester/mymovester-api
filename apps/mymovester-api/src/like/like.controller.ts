@@ -20,7 +20,7 @@ import { UserStretchingLikeListResponse } from '../stretching/response/user-stre
 @Controller('like')
 export class LikeController {
   constructor(private likeService: LikeService) {}
-  @Post('/stretching/:id')
+  @Post('/stretchings/:id')
   @HttpCode(201)
   @UseGuards(JwtAuthGuard)
   createUserStretchingLike(
@@ -33,7 +33,7 @@ export class LikeController {
     });
   }
 
-  @Delete('/stretching/:id')
+  @Delete('/stretchings/:id')
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   deleteUserStretchingLike(
@@ -46,7 +46,7 @@ export class LikeController {
     });
   }
 
-  @Get('/stretching')
+  @Get('/stretchings')
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   getUserStretchingLike(
