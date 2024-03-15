@@ -1,8 +1,7 @@
 import { BaseEntityClass } from "@app/persistence/domain/base-entity.entity";
 import { RoutineItem } from "@app/persistence/domain/routine/entity/routine-item.entity";
 import { User } from "@app/persistence/domain/user/entity/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
-
+import { Column, Entity, OneToMany, OneToOne } from "typeorm";
 
 @Entity('routine')
 export class Routine extends BaseEntityClass {
