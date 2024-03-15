@@ -7,7 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from '@app/persistence/domain/user/repository/user.repository';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
 import { KakaoService } from 'apps/mymovester-api/src/auth/kakao.service';
-import { JwtStrategy } from 'apps/mymovester-api/src/auth/jwt.strategy';
+import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
+import { RoutineRepository } from '@app/persistence/domain/routine/repository/routine.repository';
 
 @Module({
   imports: [
@@ -17,6 +18,16 @@ import { JwtStrategy } from 'apps/mymovester-api/src/auth/jwt.strategy';
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, KakaoService, UserRepository],
+  providers: [
+    // Service
+    AuthService,
+    UserService,
+    KakaoService, 
+    RoutineService,
+    // Repository
+    UserRepository,
+    RoutineRepository
+  ],
 })
+
 export class AuthModule {}

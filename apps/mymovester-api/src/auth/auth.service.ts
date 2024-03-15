@@ -8,6 +8,8 @@ import { KakaoService } from 'apps/mymovester-api/src/auth/kakao.service';
 import { SocialType } from '@app/common';
 import { JwtToken } from 'apps/mymovester-api/src/auth/auth.interface';
 import { IUserDetail } from 'apps/mymovester-api/src/user/user.interface';
+import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
+import { CreateRoutineRequest } from 'apps/mymovester-api/src/routine/request/create-routine.request';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +18,7 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
     private kakaoService: KakaoService,
+    private routineService: RoutineService,
   ) {}
 
   async kakaoLogin({ body }): Promise<LoginResponse> {
@@ -37,6 +40,9 @@ export class AuthService {
         name: userProperties.kakao_account.profile.nickname,
         email: userProperties.kakao_account.email,
       });
+      
+      // 첫 회원 가입일 경우 "홍길동님의 루틴" 기본 제공
+      await this.routineService.createRoutine(user.id, `${user.nickName}님의 루틴`);
     }
 
     const { accessToken, refreshToken } = await this.getJwtToken(user.id, user.email);
