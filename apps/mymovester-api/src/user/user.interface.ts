@@ -1,4 +1,4 @@
-import { Gender, SocialType } from "@app/common";
+import { Gender, SocialType } from '@app/common';
 
 export interface IUser {
   id: number;
