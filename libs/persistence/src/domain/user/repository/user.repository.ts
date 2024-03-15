@@ -29,6 +29,7 @@ export class UserRepository extends Repository<User> {
   async deleteUser(userId: number): Promise<void> {
     this.update(userId, {
       deletedAt: new Date(),
+      socialUid: "",
     })
   }
 }
