@@ -23,6 +23,6 @@ export class RoutineController {
     @UserDeco() user: IUser,
     @Body() request: CreateRoutineRequest,
   ): Promise<DefaultResponse> {
-    return this.routineService.createRoutine(user.id, request);
+    return this.routineService.createRoutine(user.id, request.title);
   }
 }

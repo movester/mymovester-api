@@ -16,7 +16,7 @@ export class RoutineService {
 
   async createRoutine(
     userId: number,
-    body: CreateRoutineRequest,
+    title: string,
   ): Promise<DefaultResponse> {
     const [routines, count] = await this.routineRepository.findByUserId(
       userId,
@@ -26,7 +26,7 @@ export class RoutineService {
       throw new BadRequestException('최대 5개 루틴까지 보유가 가능합니다.');
     }
 
-    await this.routineRepository.saveRoutine(userId, body.title, routines.length === 0 ? 1 : routines[0].order + 1);
+    await this.routineRepository.saveRoutine(userId, title, routines.length === 0 ? 1 : routines[0].order + 1);
 
     return new DefaultResponse({
       isSuccess: true,
