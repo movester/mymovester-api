@@ -8,12 +8,20 @@ export class RoutineRepository extends Repository<Routine> {
     super(Routine, dataSource.createEntityManager());
   }
 
-  async findByUserId(userId: number): Promise<[Routine[], number]> {
+  async findByUserIdAndCount(userId: number): Promise<[Routine[], number]> {
     return await this.createQueryBuilder(`routine`)
     .select()
     .where(`routine.userId = :userId`, {userId})
     .orderBy(`routine.order`, 'DESC')
     .getManyAndCount();
+  }
+
+  async findByUserId(userId: number): Promise<Routine[]> {
+    return await this.createQueryBuilder(`routine`)
+    .select()
+    .where(`routine.userId = :userId`, {userId})
+    .orderBy(`routine.order`, 'ASC')
+    .getMany();
   }
 
   async saveRoutine(

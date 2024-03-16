@@ -1,8 +1,7 @@
 import {
   Body,
   Controller,
-  Delete,
-  Get,
+  Delete, Get,
   Logger,
   Param,
   ParseIntPipe,

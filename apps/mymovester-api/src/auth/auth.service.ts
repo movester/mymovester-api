@@ -9,7 +9,7 @@ import { SocialType } from '@app/common';
 import { JwtToken } from 'apps/mymovester-api/src/auth/auth.interface';
 import { IUserDetail } from 'apps/mymovester-api/src/user/user.interface';
 import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
-import { CreateRoutineRequest } from 'apps/mymovester-api/src/routine/request/create-routine.request';
+import { CreateRoutineRequest } from 'apps/mymovester-api/src/routine/routine.request';
 
 @Injectable()
 export class AuthService {
