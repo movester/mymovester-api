@@ -1,15 +1,16 @@
-import { BaseEntityClass } from "@app/persistence/domain/base-entity.entity";
-import { RoutineItem } from "@app/persistence/domain/routine/entity/routine-item.entity";
-import { User } from "@app/persistence/domain/user/entity/user.entity";
-import { Column, Entity, OneToMany, OneToOne } from "typeorm";
+import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
+import { RoutineItem } from '@app/persistence/domain/routine/entity/routine-item.entity';
+import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
 
 @Entity('routine')
 export class Routine extends BaseEntityClass {
-
-  @Column({name: 'title',
+  @Column({
+    name: 'title',
     type: 'varchar',
     length: 255,
-    default: '',comment: '제목',
+    default: '',
+    comment: '제목',
   })
   title: string;
 
@@ -28,27 +29,19 @@ export class Routine extends BaseEntityClass {
   })
   userId: number;
 
-  @OneToOne(
-    () => User,
-    (user) => user,
-    {
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
-      cascade: ['insert'],
-      nullable: true,
-    },
-  )
+  @OneToOne(() => User, (user) => user, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    cascade: ['insert'],
+    nullable: true,
+  })
   user: User;
 
-  @OneToMany(
-    () => RoutineItem,
-    (routineItem) => routineItem.routine,
-    {
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
-      cascade: ['insert'],
-      nullable: true,
-    },
-  )
+  @OneToMany(() => RoutineItem, (routineItem) => routineItem.routine, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    cascade: ['insert'],
+    nullable: true,
+  })
   routineItems: RoutineItem[];
 }

@@ -10,18 +10,18 @@ export class RoutineRepository extends Repository<Routine> {
 
   async findByUserIdAndCount(userId: number): Promise<[Routine[], number]> {
     return await this.createQueryBuilder(`routine`)
-    .select()
-    .where(`routine.userId = :userId`, {userId})
-    .orderBy(`routine.order`, 'DESC')
-    .getManyAndCount();
+      .select()
+      .where(`routine.userId = :userId`, { userId })
+      .orderBy(`routine.order`, 'DESC')
+      .getManyAndCount();
   }
 
   async findByUserId(userId: number): Promise<Routine[]> {
     return await this.createQueryBuilder(`routine`)
-    .select()
-    .where(`routine.userId = :userId`, {userId})
-    .orderBy(`routine.order`, 'ASC')
-    .getMany();
+      .select()
+      .where(`routine.userId = :userId`, { userId })
+      .orderBy(`routine.order`, 'ASC')
+      .getMany();
   }
 
   async saveRoutine(
@@ -29,13 +29,14 @@ export class RoutineRepository extends Repository<Routine> {
     title: string,
     order: number,
   ): Promise<void> {
-    await this.dataSource.transaction(async entityManager => {
-      await entityManager.create(Routine, {
-        userId,
-        title,
-        order,
-      })
-      .save();
-    })
+    await this.dataSource.transaction(async (entityManager) => {
+      await entityManager
+        .create(Routine, {
+          userId,
+          title,
+          order,
+        })
+        .save();
+    });
   }
 }

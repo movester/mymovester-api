@@ -1,12 +1,10 @@
-import { BaseEntityClass } from "@app/persistence/domain/base-entity.entity";
-import { Routine } from "@app/persistence/domain/routine/entity/routine.entity";
-import { Stretching } from "@app/persistence/domain/stretching/entity/stretching.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
-
+import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
+import { Routine } from '@app/persistence/domain/routine/entity/routine.entity';
+import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
 @Entity('routine_item')
 export class RoutineItem extends BaseEntityClass {
-
   @Column({
     name: 'order',
     type: 'int',
@@ -33,15 +31,11 @@ export class RoutineItem extends BaseEntityClass {
   })
   stretchingId: number;
 
-  @OneToOne(
-    () => Stretching,
-    (stretching) => stretching,
-    {
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
-      cascade: ['insert'],
-      nullable: true,
-    },
-  )
+  @OneToOne(() => Stretching, (stretching) => stretching, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    cascade: ['insert'],
+    nullable: true,
+  })
   stretching: Stretching;
 }

@@ -12,7 +12,10 @@ import { IUser } from '../user/user.interface';
 import { DefaultResponse } from '@app/common/response/default.response';
 import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
 import { CreateRoutineRequest } from 'apps/mymovester-api/src/routine/routine.request';
-import { GetRoutineListResponse, GetRoutineStretchingListResponse } from 'apps/mymovester-api/src/routine/routine-response';
+import {
+  GetRoutineListResponse,
+  GetRoutineStretchingListResponse,
+} from 'apps/mymovester-api/src/routine/routine-response';
 
 @Controller('/routines')
 export class RoutineController {
@@ -33,16 +36,14 @@ export class RoutineController {
   @UseGuards(JwtAuthGuard)
   getRoutinesStretching(
     @UserDeco() user: IUser,
-  ): Promise<GetRoutineStretchingListResponse> {
+  ): Promise<GetRoutineStretchingListResponse[]> {
     return this.routineService.getRoutinesStretching(user.id);
   }
 
   @Get('/')
   @HttpCode(201)
   @UseGuards(JwtAuthGuard)
-  getRoutines(
-    @UserDeco() user: IUser,
-  ): Promise<GetRoutineListResponse> {
+  getRoutines(@UserDeco() user: IUser): Promise<GetRoutineListResponse[]> {
     return this.routineService.getRoutines(user.id);
   }
 }

@@ -1,5 +1,5 @@
 export class GetRoutineStretchingListResponse {
-  id: number
+  id: number;
   title: string;
   order: number;
 
@@ -15,7 +15,11 @@ export class GetRoutineListResponse {
   stretchingImageUrls: string[];
   stretchingCount: number;
 
-  constructor(title: string, stretchingImageUrls: string[], stretchingCount: number) {
+  constructor(
+    title: string,
+    stretchingImageUrls: string[],
+    stretchingCount: number,
+  ) {
     this.title = title;
     this.stretchingImageUrls = stretchingImageUrls;
     this.stretchingCount = stretchingCount;
