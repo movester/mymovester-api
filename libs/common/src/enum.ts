@@ -36,3 +36,8 @@ export enum Gender {
   FEMAIL = 'FEMAIL',
   MAIL = 'MAIL',
 }
+
+export enum Sort {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}

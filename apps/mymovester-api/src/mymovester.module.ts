@@ -13,6 +13,9 @@ import { UserModule } from './user/user.module';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
 import { UserStretchingLike } from '@app/persistence/domain/like/entity/user-stretching-like.entity';
 import { LikeModule } from './like/like.module';
+import { RoutineModule } from 'apps/mymovester-api/src/routine/routine.module';
+import { Routine } from '@app/persistence/domain/routine/entity/routine.entity';
+import { RoutineItem } from '@app/persistence/domain/routine/entity/routine-item.entity';
 
 @Module({
   imports: [
@@ -34,6 +37,8 @@ import { LikeModule } from './like/like.module';
           // TODO
           entities: [
             __dirname + '/../**/*.entity.{js,ts}',
+            Routine,
+            RoutineItem,
             StretchingEffect,
             StretchingImage,
             StretchingPrecaution,
@@ -51,6 +56,7 @@ import { LikeModule } from './like/like.module';
     AuthModule,
     UserModule,
     LikeModule,
+    RoutineModule,
   ],
 })
 export class MymovesterModule {}
