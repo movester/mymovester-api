@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Post,
@@ -11,7 +12,10 @@ import { UserDeco } from '../shared/decorator/user.decorator';
 import { IUser } from '../user/user.interface';
 import { DefaultResponse } from '@app/common/response/default.response';
 import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
-import { CreateRoutineRequest } from 'apps/mymovester-api/src/routine/routine.request';
+import {
+  CreateRoutineRequest,
+  DeleteRoutinesRequest,
+} from 'apps/mymovester-api/src/routine/routine.request';
 import {
   GetRoutineListResponse,
   GetRoutineStretchingListResponse,
@@ -45,5 +49,15 @@ export class RoutineController {
   @UseGuards(JwtAuthGuard)
   getRoutines(@UserDeco() user: IUser): Promise<GetRoutineListResponse[]> {
     return this.routineService.getRoutines(user.id);
+  }
+
+  @Delete('/')
+  @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
+  deleteRoutines(
+    @UserDeco() user: IUser,
+    @Body() request: DeleteRoutinesRequest,
+  ): Promise<DefaultResponse> {
+    return this.routineService.deleteRoutines(user.id, request);
   }
 }

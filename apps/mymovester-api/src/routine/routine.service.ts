@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { DefaultResponse } from '@app/common/response/default.response';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoutineRepository } from '@app/persistence/domain/routine/repository/routine.repository';
@@ -6,6 +10,8 @@ import {
   GetRoutineListResponse,
   GetRoutineStretchingListResponse,
 } from 'apps/mymovester-api/src/routine/routine-response';
+import { isArrayEqual } from '@app/common';
+import { DeleteRoutinesRequest } from './routine.request';
 
 @Injectable()
 export class RoutineService {
@@ -53,5 +59,31 @@ export class RoutineService {
     return routines.map(
       (routine) => new GetRoutineListResponse(routine.title, [], 0),
     );
+  }
+
+  async deleteRoutines(
+    userId: number,
+    { ids }: DeleteRoutinesRequest,
+  ): Promise<DefaultResponse> {
+    const routines = await this.routineRepository.findByUserId(userId);
+
+    if (routines.filter((routine) => routine.userId !== userId).length > 0) {
+      throw new UnauthorizedException('루틴 삭제 권한이 없습니다.');
+    }
+
+    if (
+      isArrayEqual(
+        ids,
+        routines.map((routine) => routine.id),
+      )
+    ) {
+      throw new BadRequestException('루틴을 모두 삭제할 수 없습니다.');
+    }
+
+    await this.routineRepository.deleteRoutines(ids);
+
+    return new DefaultResponse({
+      isSuccess: true,
+    });
   }
 }
