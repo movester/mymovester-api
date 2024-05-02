@@ -86,4 +86,33 @@ export class RoutineService {
       isSuccess: true,
     });
   }
+
+  async cloneRoutine(userId: number, id: number): Promise<DefaultResponse> {
+    const [routines, count] = await this.routineRepository.findByUserIdAndCount(
+      userId,
+    );
+
+    if (count > 5) {
+      throw new BadRequestException('최대 5개 루틴까지 보유가 가능합니다.');
+    }
+
+    const targetRoutine = routines.find((routine) => routine.id === id);
+
+    if (!targetRoutine) {
+      throw new BadRequestException('복제할 루틴이 존재하지 않습니다.');
+    }
+
+    // 루틴 폴더 복제
+    await this.routineRepository.saveRoutine(
+      userId,
+      targetRoutine.title + '(사본)',
+      routines.length === 0 ? 1 : routines[0].order + 1,
+    );
+
+    // TODO: 루틴 하위 스트레칭 복제
+
+    return new DefaultResponse({
+      isSuccess: true,
+    });
+  }
 }
