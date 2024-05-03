@@ -11,6 +11,7 @@ import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { UploadModule } from '@app/common/upload/upload.module';
 import { UserStretchingLike } from '@app/persistence/domain/like/entity/user-stretching-like.entity';
 import { LikeModule } from './like/like.module';
 import { RoutineModule } from 'apps/mymovester-api/src/routine/routine.module';
@@ -55,6 +56,7 @@ import { RoutineItem } from '@app/persistence/domain/routine/entity/routine-item
     StretchingModule,
     AuthModule,
     UserModule,
+    UploadModule,
     LikeModule,
     RoutineModule,
   ],
