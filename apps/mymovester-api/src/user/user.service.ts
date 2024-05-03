@@ -57,7 +57,7 @@ export class UserService {
     await this.userRepository.deleteUser(id);
   }
 
-  async updateUser(id: number, request: UpdateUserRequest): Promise<void> {
+  async updateUser(id: number, request: UpdateUserRequest): Promise<null> {
     const user: User = await this.userRepository.findOne({
       where: { id },
     });
@@ -68,6 +68,12 @@ export class UserService {
       );
     }
 
-    await this.userRepository.updateUser(id, request.nickName, request.profileUrl);
+    await this.userRepository.updateUser(
+      id,
+      request.nickName,
+      request.profileUrl,
+    );
+
+    return null;
   }
 }
