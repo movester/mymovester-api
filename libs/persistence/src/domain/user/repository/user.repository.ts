@@ -26,10 +26,25 @@ export class UserRepository extends Repository<User> {
     return user;
   }
 
-  async deleteUser(userId: number): Promise<void> {
-    this.update(userId, {
+  async deleteUser(id: number): Promise<void> {
+    this.update(id, {
       deletedAt: new Date(),
       socialUid: '',
     });
+  }
+  
+  async updateUser(
+    id: number, 
+    nickName?: string,
+    profileUrl?: string,
+  ): Promise<void> {
+    await this.createQueryBuilder()
+    .update(User)
+    .set({
+      ...(nickName && {nickName}),
+      ...(profileUrl && {profileUrl}),
+    })
+    .where('id = :id', {id})
+    .execute();
   }
 }

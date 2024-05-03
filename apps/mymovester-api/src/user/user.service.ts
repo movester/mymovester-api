@@ -3,6 +3,7 @@ import { User } from '@app/persistence/domain/user/entity/user.entity';
 import { UserRepository } from '@app/persistence/domain/user/repository/user.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UpdateUserRequest } from 'apps/mymovester-api/src/user/request/update-user.request';
 import { UserResponse } from 'apps/mymovester-api/src/user/response/user.response';
 
 @Injectable()
@@ -11,7 +12,6 @@ export class UserService {
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {}
-
   async getUserBySocialUid(socialUid: string): Promise<User> {
     return await this.userRepository.findOne({
       where: { socialUid },
@@ -55,5 +55,19 @@ export class UserService {
 
   async deleteUser(id: number): Promise<void> {
     await this.userRepository.deleteUser(id);
+  }
+
+  async updateUser(id: number, request: UpdateUserRequest): Promise<void> {
+    const user: User = await this.userRepository.findOne({
+      where: { id },
+    });
+
+    if (user === null) {
+      throw new NotFoundException(
+        `존재하지 않는 회원입니다 (문의 mus2021mus@gmail.com)`,
+      );
+    }
+
+    await this.userRepository.updateUser(id, request.nickName, request.profileUrl);
   }
 }
