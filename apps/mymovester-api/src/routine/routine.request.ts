@@ -6,3 +6,7 @@ export class CreateRoutineRequest {
   @Length(1, 40)
   title: string;
 }
+
+export class DeleteRoutinesRequest {
+  ids: number[];
+}

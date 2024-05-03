@@ -39,4 +39,8 @@ export class RoutineRepository extends Repository<Routine> {
         .save();
     });
   }
+
+  async deleteRoutines(ids: number[]): Promise<void> {
+    await this.softDelete(ids);
+  }
 }

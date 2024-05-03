@@ -1,21 +1,27 @@
+import { DefaultResponse } from '@app/common/response/default.response';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
+  Param,
+  ParseIntPipe,
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { UserDeco } from '../shared/decorator/user.decorator';
-import { IUser } from '../user/user.interface';
-import { DefaultResponse } from '@app/common/response/default.response';
-import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
-import { CreateRoutineRequest } from 'apps/mymovester-api/src/routine/routine.request';
 import {
   GetRoutineListResponse,
   GetRoutineStretchingListResponse,
 } from 'apps/mymovester-api/src/routine/routine-response';
+import {
+  CreateRoutineRequest,
+  DeleteRoutinesRequest,
+} from 'apps/mymovester-api/src/routine/routine.request';
+import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UserDeco } from '../shared/decorator/user.decorator';
+import { IUser } from '../user/user.interface';
 
 @Controller('/routines')
 export class RoutineController {
@@ -45,5 +51,25 @@ export class RoutineController {
   @UseGuards(JwtAuthGuard)
   getRoutines(@UserDeco() user: IUser): Promise<GetRoutineListResponse[]> {
     return this.routineService.getRoutines(user.id);
+  }
+
+  @Delete('/')
+  @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
+  deleteRoutines(
+    @UserDeco() user: IUser,
+    @Body() request: DeleteRoutinesRequest,
+  ): Promise<DefaultResponse> {
+    return this.routineService.deleteRoutines(user.id, request);
+  }
+
+  @Post('/:id/clone')
+  @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
+  cloneRoutine(
+    @UserDeco() user: IUser,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<DefaultResponse> {
+    return this.routineService.cloneRoutine(user.id, id);
   }
 }
