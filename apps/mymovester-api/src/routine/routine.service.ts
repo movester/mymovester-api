@@ -3,7 +3,6 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { DefaultResponse } from '@app/common/response/default.response';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoutineRepository } from '@app/persistence/domain/routine/repository/routine.repository';
 import {
@@ -20,7 +19,7 @@ export class RoutineService {
     private routineRepository: RoutineRepository,
   ) {}
 
-  async createRoutine(userId: number, title: string): Promise<DefaultResponse> {
+  async createRoutine(userId: number, title: string): Promise<null> {
     const [routines, count] = await this.routineRepository.findByUserIdAndCount(
       userId,
     );
@@ -35,9 +34,7 @@ export class RoutineService {
       routines.length === 0 ? 1 : routines[0].order + 1,
     );
 
-    return new DefaultResponse({
-      isSuccess: true,
-    });
+    return null;
   }
 
   async getRoutinesStretching(
@@ -64,7 +61,7 @@ export class RoutineService {
   async deleteRoutines(
     userId: number,
     { ids }: DeleteRoutinesRequest,
-  ): Promise<DefaultResponse> {
+  ): Promise<null> {
     const routines = await this.routineRepository.findByUserId(userId);
 
     if (routines.filter((routine) => routine.userId !== userId).length > 0) {
@@ -82,12 +79,10 @@ export class RoutineService {
 
     await this.routineRepository.deleteRoutines(ids);
 
-    return new DefaultResponse({
-      isSuccess: true,
-    });
+    return null;
   }
 
-  async cloneRoutine(userId: number, id: number): Promise<DefaultResponse> {
+  async cloneRoutine(userId: number, id: number): Promise<null> {
     const [routines, count] = await this.routineRepository.findByUserIdAndCount(
       userId,
     );
@@ -110,9 +105,6 @@ export class RoutineService {
     );
 
     // TODO: 루틴 하위 스트레칭 복제
-
-    return new DefaultResponse({
-      isSuccess: true,
-    });
+    return null;
   }
 }

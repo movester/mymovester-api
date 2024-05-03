@@ -1,14 +1,14 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import got from 'got';
 
 export interface IUserPropertiesResponse {
   id: number;
-  kakao_account : {
+  kakao_account: {
     profile: {
       nickname: string;
-    }
+    };
     email: string;
-  }
+  };
 }
 
 @Injectable()
@@ -47,9 +47,9 @@ export class KakaoService {
 
   public async unlink(
     socialUuid: string,
-  ): Promise<{statusCode: number; id: number}> {
+  ): Promise<{ statusCode: number; id: number }> {
     try {
-      const response = await got.post<{id: number}>(
+      const response = await got.post<{ id: number }>(
         `${this.endPointV1}${this.unlinkPath}`,
         {
           headers: {
@@ -65,7 +65,7 @@ export class KakaoService {
       );
 
       const statusCode = response.statusCode;
-      const {id} = response.body;
+      const { id } = response.body;
       return {
         statusCode,
         id,

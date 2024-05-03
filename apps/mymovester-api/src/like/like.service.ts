@@ -6,7 +6,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserStretchingLikeRepository } from '@app/persistence/domain/like/repository/user-stretching-like.repository';
 import { UserStretchingLike } from '@app/persistence/domain/like/entity/user-stretching-like.entity';
-import { DefaultResponse } from '@app/common/response/default.response';
 import { GetUserStretchingLikeListRequest } from './request/get-user-stretching-like-request';
 import { IStretchingListDTO } from '../stretching/response/stretching-list.response';
 import { UserStretchingLikeListResponse } from '../stretching/response/user-stretching-like-list.response';
@@ -33,11 +32,11 @@ export class LikeService {
     private stretchingImageRepository: StretchingImageRepository,
   ) {}
 
-  // TODO: 트랜잭션
+  // TODO: deprecated
   async createUserStretchingLike(request: {
     userId: number;
     stretchingId: number;
-  }): Promise<DefaultResponse> {
+  }): Promise<object> {
     const exitedUserStretchingLike: UserStretchingLike =
       await this.userStretchingLikeRepository.findByUserIdAndStretchingId(
         request,
@@ -51,15 +50,36 @@ export class LikeService {
       stretchingId: request.stretchingId,
     });
 
-    return new DefaultResponse({
+    return {
       isSuccess: true,
-    });
+    };
   }
 
+  // TODO: 트랜잭션
+  async createUserStretchingLikeV2(request: {
+    userId: number;
+    stretchingId: number;
+  }): Promise<null> {
+    const exitedUserStretchingLike: UserStretchingLike =
+      await this.userStretchingLikeRepository.findByUserIdAndStretchingId(
+        request,
+      );
+    if (exitedUserStretchingLike !== null) {
+      throw new BadRequestException('이미 좋아요된 스트레칭입니다.');
+    }
+
+    await this.userStretchingLikeRepository.createUserStretchingLike({
+      userId: request.userId,
+      stretchingId: request.stretchingId,
+    });
+    return null;
+  }
+
+  // TODO: deprecated
   async deleteUserStretchingLike(request: {
     userId: number;
     stretchingId: number;
-  }): Promise<DefaultResponse> {
+  }): Promise<object> {
     const result =
       await this.userStretchingLikeRepository.deleteByUserIdAndStretchingId(
         request,
@@ -71,9 +91,26 @@ export class LikeService {
       );
     }
 
-    return new DefaultResponse({
+    return {
       isSuccess: true,
-    });
+    };
+  }
+
+  async deleteUserStretchingLikeV2(request: {
+    userId: number;
+    stretchingId: number;
+  }): Promise<null> {
+    const result =
+      await this.userStretchingLikeRepository.deleteByUserIdAndStretchingId(
+        request,
+      );
+
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        `좋아요 하지 않은 스트레칭입니다. id: ${request.stretchingId}`,
+      );
+    }
+    return null;
   }
 
   async getUserStretchingLikeList(
