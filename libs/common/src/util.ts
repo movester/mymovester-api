@@ -7,3 +7,14 @@ export function getSkipAndTake(
 
   return { skip, take };
 }
+
+export function isArrayEqual<T>(sourceArray: T[], targetArray: T[]): boolean {
+  if (sourceArray.length !== targetArray.length) {
+    return false;
+  }
+
+  sourceArray.sort();
+  targetArray.sort();
+
+  return sourceArray.every((data, index) => data === targetArray[index]);
+}

@@ -8,6 +8,8 @@ import { StretchingEffectRepository } from '@app/persistence/domain/stretching/r
 import { StretchingImageRepository } from '@app/persistence/domain/stretching/repository/stretching-image.repository';
 import { StretchingTechniqueRepository } from '@app/persistence/domain/stretching/repository/stretching-technique.repository';
 import { StretchingPrecautionRepository } from '@app/persistence/domain/stretching/repository/stretching-precaution.repository';
+import { LikeService } from '../like/like.service';
+import { UserStretchingLikeRepository } from '@app/persistence/domain/like/repository/user-stretching-like.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Stretching])],
@@ -19,6 +21,8 @@ import { StretchingPrecautionRepository } from '@app/persistence/domain/stretchi
     StretchingImageRepository,
     StretchingTechniqueRepository,
     StretchingPrecautionRepository,
+    UserStretchingLikeRepository,
+    LikeService,
   ],
 })
 export class StretchingModule {}

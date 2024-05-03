@@ -1,0 +1,75 @@
+import { DefaultResponse } from '@app/common/response/default.response';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  ParseIntPipe,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  GetRoutineListResponse,
+  GetRoutineStretchingListResponse,
+} from 'apps/mymovester-api/src/routine/routine-response';
+import {
+  CreateRoutineRequest,
+  DeleteRoutinesRequest,
+} from 'apps/mymovester-api/src/routine/routine.request';
+import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UserDeco } from '../shared/decorator/user.decorator';
+import { IUser } from '../user/user.interface';
+
+@Controller('/routines')
+export class RoutineController {
+  constructor(private routineService: RoutineService) {}
+
+  @Post('/')
+  @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
+  createRoutine(
+    @UserDeco() user: IUser,
+    @Body() request: CreateRoutineRequest,
+  ): Promise<DefaultResponse> {
+    return this.routineService.createRoutine(user.id, request.title);
+  }
+
+  @Get('/stretching')
+  @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
+  getRoutinesStretching(
+    @UserDeco() user: IUser,
+  ): Promise<GetRoutineStretchingListResponse[]> {
+    return this.routineService.getRoutinesStretching(user.id);
+  }
+
+  @Get('/')
+  @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
+  getRoutines(@UserDeco() user: IUser): Promise<GetRoutineListResponse[]> {
+    return this.routineService.getRoutines(user.id);
+  }
+
+  @Delete('/')
+  @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
+  deleteRoutines(
+    @UserDeco() user: IUser,
+    @Body() request: DeleteRoutinesRequest,
+  ): Promise<DefaultResponse> {
+    return this.routineService.deleteRoutines(user.id, request);
+  }
+
+  @Post('/:id/clone')
+  @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
+  cloneRoutine(
+    @UserDeco() user: IUser,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<DefaultResponse> {
+    return this.routineService.cloneRoutine(user.id, id);
+  }
+}

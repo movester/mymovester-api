@@ -39,16 +39,16 @@ export class UserService {
     }
 
     return new UserResponse({
-      id : user.id,
-      creatdAt : user.createdAt,
-      email : user.email,
-      nickName : user.nickName,
-      socialType : user.socialType,
-      socialUid : user.socialUid,
-      phoneNumber : user.phoneNumber,
-      birthAt : user.birthAt,
-      gender : user.gender,
-      deletedAt : user.deletedAt,
+      id: user.id,
+      creatdAt: user.createdAt,
+      email: user.email,
+      nickName: user.nickName,
+      socialType: user.socialType,
+      socialUid: user.socialUid,
+      phoneNumber: user.phoneNumber,
+      birthAt: user.birthAt,
+      gender: user.gender,
+      deletedAt: user.deletedAt,
       profileUrl: user.profileUrl,
     });
   }

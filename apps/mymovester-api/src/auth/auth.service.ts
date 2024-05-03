@@ -8,6 +8,7 @@ import { KakaoService } from 'apps/mymovester-api/src/auth/kakao.service';
 import { SocialType } from '@app/common';
 import { JwtToken } from 'apps/mymovester-api/src/auth/auth.interface';
 import { IUserDetail } from 'apps/mymovester-api/src/user/user.interface';
+import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
 
 @Injectable()
 export class AuthService {
@@ -16,17 +17,16 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
     private kakaoService: KakaoService,
+    private routineService: RoutineService,
   ) {}
 
   async kakaoLogin({ body }): Promise<LoginResponse> {
-    const {socialUid} = body;
-    const userProperties = await this.kakaoService.getUserProperties(
-      socialUid,
-    );
+    const { socialUid } = body;
+    const userProperties = await this.kakaoService.getUserProperties(socialUid);
 
     // kakaoUid를 기반으로 기가입 유저 valid
     let user: User = await this.userService.getUserBySocialUid(
-      userProperties.id.toString()
+      userProperties.id.toString(),
     );
 
     if (user == null) {
@@ -37,9 +37,18 @@ export class AuthService {
         name: userProperties.kakao_account.profile.nickname,
         email: userProperties.kakao_account.email,
       });
+
+      // 첫 회원 가입일 경우 "홍길동님의 루틴" 기본 제공
+      await this.routineService.createRoutine(
+        user.id,
+        `${user.nickName}님의 루틴`,
+      );
     }
 
-    const { accessToken, refreshToken } = await this.getJwtToken(user.id, user.email);
+    const { accessToken, refreshToken } = await this.getJwtToken(
+      user.id,
+      user.email,
+    );
 
     const loginResponseParam: ILoginResponseDTO = {
       id: user.id,
