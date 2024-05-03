@@ -25,7 +25,7 @@ export class RoutineService {
       userId,
     );
 
-    if (count > 5) {
+    if (count >= 5) {
       throw new BadRequestException('최대 5개 루틴까지 보유가 가능합니다.');
     }
 
@@ -92,7 +92,7 @@ export class RoutineService {
       userId,
     );
 
-    if (count > 5) {
+    if (count >= 5) {
       throw new BadRequestException('최대 5개 루틴까지 보유가 가능합니다.');
     }
 
