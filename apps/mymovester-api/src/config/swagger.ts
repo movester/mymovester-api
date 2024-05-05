@@ -17,18 +17,10 @@ export function swaggerBuilder(app) {
       bearerFormat: 'JWT',
       in: 'header',
     })
+    .addServer('http://movester.kr', 'prod')
     .build();
 
-  let url = 'http://localhost:4000';
-
-  if (process.env.ENVIRONMENT === 'prod') {
-    url = 'http://movester.kr';
-  } else if (process.env.ENVIRONMENT === 'dev') {
-    url = 'http://movester.kr';
-  }
-
   const swaggerCustomOptions: SwaggerCustomOptions = {
-    url,
     swaggerOptions: {
       persistAuthorization: true,
     },
