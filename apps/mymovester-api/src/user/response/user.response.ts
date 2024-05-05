@@ -1,4 +1,4 @@
-import { Gender, SocialType } from "@app/common";
+import { Gender, SocialType } from '@app/common';
 
 export interface IUserDTO {
   id: number;
@@ -28,8 +28,7 @@ export class UserResponse implements IUserDTO {
   deletedAt: Date;
 
   constructor(user: IUserDTO) {
-    this.id = user.id,
-    this.creatdAt = user.creatdAt;
+    (this.id = user.id), (this.creatdAt = user.creatdAt);
     this.email = user.email;
     this.nickName = user.nickName;
     this.socialType = user.socialType;

@@ -53,4 +53,12 @@ export class RoutineRepository extends Repository<Routine> {
       .where('id = :id', { id })
       .execute();
   }
+
+  async findByIdAndUserId(id: number, userId: number): Promise<Routine> {
+    return await this.createQueryBuilder(`routine`)
+      .select()
+      .where(`routine.id = :id `, { id })
+      .andWhere(`routine.userId = :userId`, { userId })
+      .getOne();
+  }
 }
