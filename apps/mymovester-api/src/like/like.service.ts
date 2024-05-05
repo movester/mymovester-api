@@ -1,20 +1,17 @@
+import { UserStretchingLike } from '@app/persistence/domain/like/entity/user-stretching-like.entity';
+import { UserStretchingLikeRepository } from '@app/persistence/domain/like/repository/user-stretching-like.repository';
+import { StretchingEffectRepository } from '@app/persistence/domain/stretching/repository/stretching-effect.repository';
+import { StretchingImageRepository } from '@app/persistence/domain/stretching/repository/stretching-image.repository';
+import { StretchingRepository } from '@app/persistence/domain/stretching/repository/stretching.repository';
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserStretchingLikeRepository } from '@app/persistence/domain/like/repository/user-stretching-like.repository';
-import { UserStretchingLike } from '@app/persistence/domain/like/entity/user-stretching-like.entity';
-import { GetUserStretchingLikeListRequest } from './request/get-user-stretching-like-request';
 import { IStretchingListDTO } from '../stretching/response/stretching-list.response';
 import { UserStretchingLikeListResponse } from '../stretching/response/user-stretching-like-list.response';
-import { StretchingEffect } from '@app/persistence/domain/stretching/entity/stretching-effect.entity';
-import { StretchingRepository } from '@app/persistence/domain/stretching/repository/stretching.repository';
-import { StretchingEffectRepository } from '@app/persistence/domain/stretching/repository/stretching-effect.repository';
-import { StretchingImageRepository } from '@app/persistence/domain/stretching/repository/stretching-image.repository';
-import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
-import { StretchingImage } from '@app/persistence/domain/stretching/entity/stretching-image.entity';
+import { GetUserStretchingLikeListRequest } from './request/get-user-stretching-like-request';
 
 @Injectable()
 export class LikeService {

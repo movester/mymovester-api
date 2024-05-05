@@ -2,16 +2,16 @@ import { Stretching } from '@app/persistence/domain/stretching/entity/stretching
 import { StretchingRepository } from '@app/persistence/domain/stretching/repository/stretching.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { LikeService } from '../like/like.service';
+import { GetStretchingListRequest } from './request/get-stretching-list.request';
 import {
   IStretchingDetailDTO,
   StretchingDetailResponse,
 } from './response/stretching-detail.response';
-import { GetStretchingListRequest } from './request/get-stretching-list.request';
 import {
   IStretchingListDTO,
   StretchingListResponse,
 } from './response/stretching-list.response';
-import { LikeService } from '../like/like.service';
 
 @Injectable()
 export class StretchingService {
