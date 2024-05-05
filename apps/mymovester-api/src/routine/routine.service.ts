@@ -10,13 +10,16 @@ import {
   GetRoutineStretchingListResponse,
 } from 'apps/mymovester-api/src/routine/routine-response';
 import { isArrayEqual } from '@app/common';
-import { DeleteRoutinesRequest } from './routine.request';
+import { DeleteRoutinesRequest, UpdateRoutineRequest } from './routine.request';
+import { UserRepository } from '@app/persistence/domain/user/repository/user.repository';
 
 @Injectable()
 export class RoutineService {
   constructor(
     @InjectRepository(RoutineRepository)
     private routineRepository: RoutineRepository,
+    @InjectRepository(UserRepository)
+    private userRepository: UserRepository,
   ) {}
 
   async createRoutine(userId: number, title: string): Promise<null> {
@@ -106,5 +109,21 @@ export class RoutineService {
 
     // TODO: 루틴 하위 스트레칭 복제
     return null;
+  }
+
+  async updateRoutine(
+    userId: number,
+    id: number,
+    { title }: UpdateRoutineRequest,
+  ): Promise<void> {
+    const user = await this.userRepository.findUser(userId);
+
+    if (!user) {
+      throw new BadRequestException('루틴 수정 권한이 없습니다.');
+    }
+
+    await this.routineRepository.updateRoutine(id, title);
+
+    return;
   }
 }

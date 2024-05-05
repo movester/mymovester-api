@@ -12,6 +12,7 @@ export class UserService {
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
   ) {}
+
   async getUserBySocialUid(socialUid: string): Promise<User> {
     return await this.userRepository.findOne({
       where: { socialUid },

@@ -10,3 +10,10 @@ export class CreateRoutineRequest {
 export class DeleteRoutinesRequest {
   ids: number[];
 }
+
+export class UpdateRoutineRequest {
+  @IsNotEmpty()
+  @IsString()
+  @Length(1, 40)
+  title: string;
+}
