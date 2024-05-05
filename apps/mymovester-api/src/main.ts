@@ -22,8 +22,10 @@ async function bootstrap() {
   // TODO: FE 논의 필요
   // app.useGlobalPipes(new ValidationPipe({ transform: true })); // DTO class-validator
   app.useGlobalFilters(new HttpExceptionFilter()); // HTTP exception config
-  app.useGlobalInterceptors(new SentryInterceptor()); // Sentry Config
-  app.useGlobalInterceptors(new WebhookInterceptor()); // Slack Webhook Config
+  if (process.env.ENVIRONMENT !== 'local') {
+    app.useGlobalInterceptors(new SentryInterceptor()); // Sentry Config
+    app.useGlobalInterceptors(new WebhookInterceptor()); // Slack Webhook Config
+  }
 
   const port = process.env.MYMOVESTER_PORT;
   Sentry.init({
