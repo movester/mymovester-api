@@ -1,15 +1,15 @@
+import { isArrayEqual } from '@app/common';
+import { RoutineRepository } from '@app/persistence/domain/routine/repository/routine.repository';
 import {
   BadRequestException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RoutineRepository } from '@app/persistence/domain/routine/repository/routine.repository';
 import {
   GetRoutineListResponse,
   GetRoutineStretchingListResponse,
 } from 'apps/mymovester-api/src/routine/routine-response';
-import { isArrayEqual } from '@app/common';
 import { DeleteRoutinesRequest, UpdateRoutineRequest } from './routine.request';
 
 @Injectable()
