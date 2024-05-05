@@ -1,14 +1,15 @@
-import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { JwtModule } from '@nestjs/jwt';
-import { UserService } from '../user/user.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserRepository } from '@app/persistence/domain/user/repository/user.repository';
+import { RoutineRepository } from '@app/persistence/domain/routine/repository/routine.repository';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { UserRepository } from '@app/persistence/domain/user/repository/user.repository';
+import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { KakaoService } from 'apps/mymovester-api/src/auth/kakao.service';
 import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
-import { RoutineRepository } from '@app/persistence/domain/routine/repository/routine.repository';
+import { UserService } from '../user/user.service';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -22,12 +23,12 @@ import { RoutineRepository } from '@app/persistence/domain/routine/repository/ro
     // Service
     AuthService,
     UserService,
-    KakaoService, 
+    KakaoService,
     RoutineService,
     // Repository
     UserRepository,
-    RoutineRepository
+    RoutineRepository,
+    ConfigService,
   ],
 })
-
 export class AuthModule {}
