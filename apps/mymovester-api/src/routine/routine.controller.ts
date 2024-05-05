@@ -1,4 +1,7 @@
-import { DefaultResponse } from '@app/common/response/default.response';
+import {
+  DefaultResponse,
+  IDefaultResponse,
+} from '@app/common/response/default.response';
 import {
   Body,
   Controller,
@@ -10,10 +13,6 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import {
-  GetRoutineListResponse,
-  GetRoutineStretchingListResponse,
-} from 'apps/mymovester-api/src/routine/routine-response';
 import {
   CreateRoutineRequest,
   DeleteRoutinesRequest,
@@ -28,48 +27,52 @@ export class RoutineController {
   constructor(private routineService: RoutineService) {}
 
   @Post('/')
-  @HttpCode(201)
   @UseGuards(JwtAuthGuard)
-  createRoutine(
+  async createRoutine(
     @UserDeco() user: IUser,
     @Body() request: CreateRoutineRequest,
-  ): Promise<DefaultResponse> {
-    return this.routineService.createRoutine(user.id, request.title);
+  ): Promise<IDefaultResponse> {
+    return DefaultResponse.ok(
+      await this.routineService.createRoutine(user.id, request.title),
+    );
   }
 
   @Get('/stretching')
-  @HttpCode(201)
   @UseGuards(JwtAuthGuard)
-  getRoutinesStretching(
+  async getRoutinesStretching(
     @UserDeco() user: IUser,
-  ): Promise<GetRoutineStretchingListResponse[]> {
-    return this.routineService.getRoutinesStretching(user.id);
+  ): Promise<IDefaultResponse> {
+    return DefaultResponse.ok(
+      await this.routineService.getRoutinesStretching(user.id),
+    );
   }
 
   @Get('/')
-  @HttpCode(201)
   @UseGuards(JwtAuthGuard)
-  getRoutines(@UserDeco() user: IUser): Promise<GetRoutineListResponse[]> {
-    return this.routineService.getRoutines(user.id);
+  async getRoutines(@UserDeco() user: IUser): Promise<IDefaultResponse> {
+    return DefaultResponse.ok(await this.routineService.getRoutines(user.id));
   }
 
   @Delete('/')
-  @HttpCode(201)
   @UseGuards(JwtAuthGuard)
-  deleteRoutines(
+  async deleteRoutines(
     @UserDeco() user: IUser,
     @Body() request: DeleteRoutinesRequest,
-  ): Promise<DefaultResponse> {
-    return this.routineService.deleteRoutines(user.id, request);
+  ): Promise<IDefaultResponse> {
+    return DefaultResponse.ok(
+      await this.routineService.deleteRoutines(user.id, request),
+    );
   }
 
   @Post('/:id/clone')
   @HttpCode(201)
   @UseGuards(JwtAuthGuard)
-  cloneRoutine(
+  async cloneRoutine(
     @UserDeco() user: IUser,
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<DefaultResponse> {
-    return this.routineService.cloneRoutine(user.id, id);
+  ): Promise<IDefaultResponse> {
+    return DefaultResponse.ok(
+      await this.routineService.cloneRoutine(user.id, id),
+    );
   }
 }

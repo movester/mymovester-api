@@ -13,7 +13,7 @@ export class SentryInterceptor implements NestInterceptor {
     return next.handle().pipe(
       catchError((error) => {
         Sentry.captureException(error);
-        return null;
+        throw error;
       }),
     );
   }

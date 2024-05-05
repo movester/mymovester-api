@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsEnum, IsInt, IsString, Length } from 'class-validator';
+import { IsEnum, IsInt, IsOptional, IsString, Length } from 'class-validator';
 import {
   StretchingListOrderFilter,
   StretchingMainCategoryType,
@@ -14,18 +14,21 @@ export class GetStretchingListRequest {
 
   @Transform(({ value }) => toNumber(value, { default: 1, min: 1 }))
   @IsInt()
-  size: number;
+  size!: number;
 
+  @IsOptional()
   @IsString()
   @Length(1, 50)
-  title?: string;
+  title: string | null;
 
+  @IsOptional()
   @IsEnum(StretchingMainCategoryType)
-  mainCategory?: StretchingMainCategoryType;
+  mainCategory: StretchingMainCategoryType | null;
 
+  @IsOptional()
   @IsEnum(StretchingSubCategoryType)
-  subCategory?: StretchingSubCategoryType;
+  subCategory: StretchingSubCategoryType | null;
 
   @IsEnum(StretchingListOrderFilter)
-  orderFilter?: StretchingListOrderFilter = StretchingListOrderFilter.RECENT;
+  orderFilter: StretchingListOrderFilter = StretchingListOrderFilter.RECENT;
 }
