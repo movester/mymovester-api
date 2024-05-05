@@ -12,7 +12,7 @@ export class StretchingEffect extends BaseEntityClass {
   })
   stretchingId: number;
 
-  @ManyToOne(() => Stretching, {
+  @ManyToOne(() => Stretching, (stretching) => stretching.stretchingEffects, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
     nullable: false,

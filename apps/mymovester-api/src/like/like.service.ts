@@ -59,7 +59,7 @@ export class LikeService {
   async createUserStretchingLikeV2(request: {
     userId: number;
     stretchingId: number;
-  }): Promise<null> {
+  }): Promise<void> {
     const exitedUserStretchingLike: UserStretchingLike =
       await this.userStretchingLikeRepository.findByUserIdAndStretchingId(
         request,
@@ -72,7 +72,7 @@ export class LikeService {
       userId: request.userId,
       stretchingId: request.stretchingId,
     });
-    return null;
+    return;
   }
 
   // TODO: deprecated
@@ -99,7 +99,7 @@ export class LikeService {
   async deleteUserStretchingLikeV2(request: {
     userId: number;
     stretchingId: number;
-  }): Promise<null> {
+  }): Promise<void> {
     const result =
       await this.userStretchingLikeRepository.deleteByUserIdAndStretchingId(
         request,
@@ -110,7 +110,7 @@ export class LikeService {
         `좋아요 하지 않은 스트레칭입니다. id: ${request.stretchingId}`,
       );
     }
-    return null;
+    return;
   }
 
   async getUserStretchingLikeList(
@@ -126,39 +126,26 @@ export class LikeService {
         },
       );
 
-    const stretchings: Stretching[] = await Promise.all(
-      userStretchingLikes.map(
-        async (userStretchingLike) =>
-          await this.stretchingRepository.findOne({
-            where: { id: userStretchingLike.stretchingId },
-          }),
-      ),
-    );
+    const stretchingSummaries =
+      await this.stretchingRepository.findStretchingSummaries(
+        userStretchingLikes.map((s) => s.stretchingId),
+      );
 
-    const stretchingList: IStretchingListDTO[] = await Promise.all(
-      stretchings.map(async (stretching) => {
-        const stretchingEffect: StretchingEffect =
-          await this.stretchingEffectRepository.findOneRepresentativeStretchingEffect(
-            stretching.id,
-          );
-
-        const stretchingImage: StretchingImage =
-          await this.stretchingImageRepository.findOneRepresentativeStretchingImage(
-            stretching.id,
-          );
-
+    const stretchingList: IStretchingListDTO[] = stretchingSummaries.map(
+      (stretching) => {
         return {
           id: stretching.id,
           title: stretching.title,
           mainCategory: stretching.mainCategory,
           subCategory: stretching.subCategory,
           createdAt: stretching.createdAt,
-          effect: stretchingEffect.effect,
-          imageUrl: stretchingImage.url,
+          effect: stretching.stretchingEffects[0].effect,
+          imageUrl: stretching.stretchingImages[0].url,
           isLike: true,
         };
-      }),
+      },
     );
+
     return new UserStretchingLikeListResponse(
       userStretchingLikesTotal,
       stretchingList,
