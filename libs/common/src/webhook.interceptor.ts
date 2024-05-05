@@ -4,16 +4,14 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { catchError, of } from 'rxjs';
+import { catchError } from 'rxjs';
 import { IncomingWebhook } from '@slack/client';
-import * as Sentry from '@sentry/node';
 
 @Injectable()
 export class WebhookInterceptor implements NestInterceptor {
   intercept(_: ExecutionContext, next: CallHandler) {
     return next.handle().pipe(
       catchError((error) => {
-        Sentry.captureException(error);
         const webhook = new IncomingWebhook(process.env.SLACK_WEBHOOK);
         webhook.send({
           attachments: [
@@ -30,7 +28,7 @@ export class WebhookInterceptor implements NestInterceptor {
             },
           ],
         });
-        return of(error);
+        throw error;
       }),
     );
   }

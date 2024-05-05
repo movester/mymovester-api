@@ -1,15 +1,12 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export interface IDefaultResponse {
-  //   status: number;
   isSuccess: boolean;
   data?: any;
-  errorCode?: string;
   errorMessage?: string;
 }
 
 export class DefaultResponse implements IDefaultResponse {
-  //   status: number;
 
   @ApiProperty({
     description: '',
@@ -43,10 +40,10 @@ export class DefaultResponse implements IDefaultResponse {
   })
   errorMessage?: string;
 
-  constructor(response: IDefaultResponse) {
-    this.isSuccess = response.isSuccess;
-    this.data = response.data;
-    this.errorCode = response.errorCode;
-    this.errorMessage = response.errorMessage;
+  static ok<T>(data: T): IDefaultResponse {
+    return {
+      isSuccess: true,
+      data,
+    };
   }
 }
