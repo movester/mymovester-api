@@ -9,7 +9,7 @@ export function swaggerBuilder(app) {
   const config = new DocumentBuilder()
     .setTitle('mymovester')
     .setDescription('마이뭅스터 프로덕트 API')
-    .setExternalDoc('서비스 링크', 'http://movester.kr/stretchings')
+    .setExternalDoc('서비스 링크', 'http://movester.kr')
     .setVersion('beta')
     .addBearerAuth({
       type: 'http',
@@ -19,7 +19,16 @@ export function swaggerBuilder(app) {
     })
     .build();
 
+  let url = 'http://localhost:4000';
+
+  if (process.env.ENVIRONMENT === 'prod') {
+    url = 'http://movester.kr';
+  } else if (process.env.ENVIRONMENT === 'dev') {
+    url = 'http://movester.kr';
+  }
+
   const swaggerCustomOptions: SwaggerCustomOptions = {
+    url,
     swaggerOptions: {
       persistAuthorization: true,
     },
@@ -29,5 +38,5 @@ export function swaggerBuilder(app) {
     extraModels: [],
   });
 
-  SwaggerModule.setup('swagger', app, document, swaggerCustomOptions);
+  SwaggerModule.setup('/swagger', app, document, swaggerCustomOptions);
 }
