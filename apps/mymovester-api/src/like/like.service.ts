@@ -1,7 +1,5 @@
 import { UserStretchingLike } from '@app/persistence/domain/like/entity/user-stretching-like.entity';
 import { UserStretchingLikeRepository } from '@app/persistence/domain/like/repository/user-stretching-like.repository';
-import { StretchingEffectRepository } from '@app/persistence/domain/stretching/repository/stretching-effect.repository';
-import { StretchingImageRepository } from '@app/persistence/domain/stretching/repository/stretching-image.repository';
 import { StretchingRepository } from '@app/persistence/domain/stretching/repository/stretching.repository';
 import {
   BadRequestException,
@@ -21,12 +19,6 @@ export class LikeService {
 
     @InjectRepository(StretchingRepository)
     private stretchingRepository: StretchingRepository,
-
-    @InjectRepository(StretchingEffectRepository)
-    private stretchingEffectRepository: StretchingEffectRepository,
-
-    @InjectRepository(StretchingImageRepository)
-    private stretchingImageRepository: StretchingImageRepository,
   ) {}
 
   // TODO: deprecated
@@ -122,6 +114,10 @@ export class LikeService {
           userId,
         },
       );
+
+    if (userStretchingLikesTotal === 0) {
+      return new UserStretchingLikeListResponse(userStretchingLikesTotal, []);
+    }
 
     const stretchingSummaries =
       await this.stretchingRepository.findStretchingSummaries(
