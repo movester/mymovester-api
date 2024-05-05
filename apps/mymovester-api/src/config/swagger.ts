@@ -1,4 +1,9 @@
-import { DocumentBuilder, OpenAPIObject, SwaggerCustomOptions, SwaggerModule } from "@nestjs/swagger";
+import {
+  DocumentBuilder,
+  OpenAPIObject,
+  SwaggerCustomOptions,
+  SwaggerModule,
+} from '@nestjs/swagger';
 
 export function swaggerBuilder(app) {
   const config = new DocumentBuilder()
@@ -21,8 +26,7 @@ export function swaggerBuilder(app) {
   };
 
   const document: OpenAPIObject = SwaggerModule.createDocument(app, config, {
-    extraModels: [
-    ],
+    extraModels: [],
   });
 
   SwaggerModule.setup('swagger', app, document, swaggerCustomOptions);

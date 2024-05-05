@@ -7,15 +7,16 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
   Param,
   ParseIntPipe,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import {
   CreateRoutineRequest,
   DeleteRoutinesRequest,
+  UpdateRoutineRequest,
 } from 'apps/mymovester-api/src/routine/routine.request';
 import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -65,7 +66,6 @@ export class RoutineController {
   }
 
   @Post('/:id/clone')
-  @HttpCode(201)
   @UseGuards(JwtAuthGuard)
   async cloneRoutine(
     @UserDeco() user: IUser,
@@ -73,6 +73,18 @@ export class RoutineController {
   ): Promise<IDefaultResponse> {
     return DefaultResponse.ok(
       await this.routineService.cloneRoutine(user.id, id),
+    );
+  }
+
+  @Put('/:id')
+  @UseGuards(JwtAuthGuard)
+  async updateRoutine(
+    @UserDeco() user: IUser,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() request: UpdateRoutineRequest,
+  ): Promise<IDefaultResponse> {
+    return DefaultResponse.ok(
+      await this.routineService.updateRoutine(user.id, id, request.title),
     );
   }
 }

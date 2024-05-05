@@ -43,4 +43,22 @@ export class RoutineRepository extends Repository<Routine> {
   async deleteRoutines(ids: number[]): Promise<void> {
     await this.softDelete(ids);
   }
+
+  async updateRoutine(id: number, title: string): Promise<void> {
+    await this.createQueryBuilder()
+      .update(Routine)
+      .set({
+        ...(title && { title }),
+      })
+      .where('id = :id', { id })
+      .execute();
+  }
+
+  async findByIdAndUserId(id: number, userId: number): Promise<Routine> {
+    return await this.createQueryBuilder(`routine`)
+      .select()
+      .where(`routine.id = :id `, { id })
+      .andWhere(`routine.userId = :userId`, { userId })
+      .getOne();
+  }
 }

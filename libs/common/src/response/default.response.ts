@@ -7,7 +7,6 @@ export interface IDefaultResponse {
 }
 
 export class DefaultResponse implements IDefaultResponse {
-
   @ApiProperty({
     description: '',
     example: '',

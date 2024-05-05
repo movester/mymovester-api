@@ -1,15 +1,15 @@
+import { isArrayEqual } from '@app/common';
+import { RoutineRepository } from '@app/persistence/domain/routine/repository/routine.repository';
 import {
   BadRequestException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RoutineRepository } from '@app/persistence/domain/routine/repository/routine.repository';
 import {
   GetRoutineListResponse,
   GetRoutineStretchingListResponse,
 } from 'apps/mymovester-api/src/routine/routine-response';
-import { isArrayEqual } from '@app/common';
 import { DeleteRoutinesRequest } from './routine.request';
 
 @Injectable()
@@ -106,5 +106,21 @@ export class RoutineService {
 
     // TODO: 루틴 하위 스트레칭 복제
     return null;
+  }
+
+  async updateRoutine(
+    userId: number,
+    id: number,
+    title: string,
+  ): Promise<void> {
+    const routine = await this.routineRepository.findByIdAndUserId(id, userId);
+
+    if (!routine) {
+      throw new BadRequestException('루틴 수정 권한이 없습니다.');
+    }
+
+    await this.routineRepository.updateRoutine(id, title);
+
+    return;
   }
 }

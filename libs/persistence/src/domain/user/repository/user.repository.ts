@@ -32,19 +32,23 @@ export class UserRepository extends Repository<User> {
       socialUid: '',
     });
   }
-  
+
   async updateUser(
-    id: number, 
+    id: number,
     nickName?: string,
     profileUrl?: string,
   ): Promise<void> {
     await this.createQueryBuilder()
-    .update(User)
-    .set({
-      ...(nickName && {nickName}),
-      ...(profileUrl && {profileUrl}),
-    })
-    .where('id = :id', {id})
-    .execute();
+      .update(User)
+      .set({
+        ...(nickName && { nickName }),
+        ...(profileUrl && { profileUrl }),
+      })
+      .where('id = :id', { id })
+      .execute();
+  }
+
+  async findUser(id: number): Promise<User> {
+    return await this.findOne({ where: { id } });
   }
 }
