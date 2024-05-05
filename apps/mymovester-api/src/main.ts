@@ -1,11 +1,11 @@
-import { NestFactory } from '@nestjs/core';
-import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
-import * as Sentry from '@sentry/node';
-import { MymovesterModule } from './mymovester.module';
 import { HttpExceptionFilter } from '@app/common/exception/http-exception.filter';
-import { WebhookInterceptor } from '@app/common/webhook.interceptor';
 import { SentryInterceptor } from '@app/common/sentry.interceptor';
+import { WebhookInterceptor } from '@app/common/webhook.interceptor';
+import { Logger, VersioningType } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import * as Sentry from '@sentry/node';
 import { swaggerBuilder } from './config/swagger';
+import { MymovesterModule } from './mymovester.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(MymovesterModule);
@@ -19,7 +19,8 @@ async function bootstrap() {
   });
 
   swaggerBuilder(app); // Inject Swagger
-  app.useGlobalPipes(new ValidationPipe({ transform: true })); // DTO class-validator
+  // TODO: FE 논의 필요
+  // app.useGlobalPipes(new ValidationPipe({ transform: true })); // DTO class-validator
   app.useGlobalFilters(new HttpExceptionFilter()); // HTTP exception config
   app.useGlobalInterceptors(new SentryInterceptor()); // Sentry Config
   app.useGlobalInterceptors(new WebhookInterceptor()); // Slack Webhook Config
