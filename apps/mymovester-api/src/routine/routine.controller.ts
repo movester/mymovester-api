@@ -84,7 +84,7 @@ export class RoutineController {
     @Body() request: UpdateRoutineRequest,
   ): Promise<IDefaultResponse> {
     return DefaultResponse.ok(
-      await this.routineService.updateRoutine(user.id, id, request),
+      await this.routineService.updateRoutine(user.id, id, request.title),
     );
   }
 }

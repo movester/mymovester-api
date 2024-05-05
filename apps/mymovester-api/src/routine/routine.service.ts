@@ -10,7 +10,7 @@ import {
   GetRoutineListResponse,
   GetRoutineStretchingListResponse,
 } from 'apps/mymovester-api/src/routine/routine-response';
-import { DeleteRoutinesRequest, UpdateRoutineRequest } from './routine.request';
+import { DeleteRoutinesRequest } from './routine.request';
 
 @Injectable()
 export class RoutineService {
@@ -111,7 +111,7 @@ export class RoutineService {
   async updateRoutine(
     userId: number,
     id: number,
-    { title }: UpdateRoutineRequest,
+    title: string,
   ): Promise<void> {
     const routine = await this.routineRepository.findByIdAndUserId(id, userId);
 
