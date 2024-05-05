@@ -113,4 +113,30 @@ export class StretchingRepository extends Repository<Stretching> {
 
     return query.getManyAndCount();
   }
+
+  async findStretchingDetail(id: number): Promise<Stretching> {
+    return this.createQueryBuilder('stretching')
+      .leftJoinAndSelect('stretching.stretchingEffects', 'stretchingEffect')
+      .leftJoinAndSelect('stretching.stretchingImages', 'StretchingImage')
+      .leftJoinAndSelect(
+        'stretching.stretchingTechniques',
+        'StretchingTechnique',
+      )
+      .leftJoinAndSelect(
+        'stretching.stretchingPrecautions',
+        'StretchingPrecaution',
+      )
+      .where('stretching.id = :id', { id })
+      .getOne();
+  }
+
+  async findStretchingSummaries(ids: number[]): Promise<Stretching[]> {
+    return this.createQueryBuilder('stretching')
+      .leftJoinAndSelect('stretching.stretchingEffects', 'stretchingEffect')
+      .leftJoinAndSelect('stretching.stretchingImages', 'StretchingImage')
+      .where('stretching.id IN (:...ids)', { ids })
+      .andWhere('stretchingEffect.order = :order', { order: 1 })
+      .andWhere('StretchingImage.order = :order', { order: 1 })
+      .getMany();
+  }
 }

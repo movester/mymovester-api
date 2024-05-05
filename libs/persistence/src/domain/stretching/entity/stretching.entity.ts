@@ -87,7 +87,7 @@ export class Stretching extends BaseEntityClass {
       nullable: true,
     },
   )
-  stretchingEffect: StretchingEffect[];
+  stretchingEffects: StretchingEffect[];
 
   @OneToMany(
     () => StretchingImage,
@@ -99,7 +99,7 @@ export class Stretching extends BaseEntityClass {
       nullable: true,
     },
   )
-  stretchingImage: StretchingImage[];
+  stretchingImages: StretchingImage[];
 
   @OneToMany(
     () => StretchingPrecaution,
@@ -111,7 +111,7 @@ export class Stretching extends BaseEntityClass {
       nullable: true,
     },
   )
-  stretchingPrecaution: StretchingPrecaution[];
+  stretchingPrecautions: StretchingPrecaution[];
 
   @OneToMany(
     () => StretchingTechnique,
@@ -123,7 +123,7 @@ export class Stretching extends BaseEntityClass {
       nullable: true,
     },
   )
-  stretchingTechnique: StretchingTechnique[];
+  stretchingTechniques: StretchingTechnique[];
 
   public addView() {
     this.views++;

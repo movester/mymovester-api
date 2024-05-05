@@ -12,9 +12,8 @@ export class StretchingTechnique extends BaseEntityClass {
   stretchingId: number;
 
   @ManyToOne(
-    () => {
-      return Stretching;
-    },
+    () => Stretching,
+    (stretching) => stretching.stretchingTechniques,
     {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',

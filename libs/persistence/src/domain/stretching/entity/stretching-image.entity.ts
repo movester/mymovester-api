@@ -11,16 +11,11 @@ export class StretchingImage extends BaseEntityClass {
   })
   stretchingId: number;
 
-  @ManyToOne(
-    () => {
-      return Stretching;
-    },
-    {
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE',
-      nullable: false,
-    },
-  )
+  @ManyToOne(() => Stretching, (stretching) => stretching.stretchingImages, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    nullable: false,
+  })
   @JoinColumn({
     name: 'stretching_id',
     referencedColumnName: 'id',

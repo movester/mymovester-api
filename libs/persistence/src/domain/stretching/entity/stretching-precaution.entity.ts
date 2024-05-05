@@ -12,9 +12,8 @@ export class StretchingPrecaution extends BaseEntityClass {
   stretchingId: number;
 
   @ManyToOne(
-    () => {
-      return Stretching;
-    },
+    () => Stretching,
+    (stretching) => stretching.stretchingPrecautions,
     {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
