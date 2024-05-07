@@ -1,6 +1,6 @@
-import { DataSource, Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
 import { Routine } from '@app/persistence/domain/routine/entity/routine.entity';
+import { Injectable } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class RoutineRepository extends Repository<Routine> {
@@ -60,5 +60,15 @@ export class RoutineRepository extends Repository<Routine> {
       .where(`routine.id = :id `, { id })
       .andWhere(`routine.userId = :userId`, { userId })
       .getOne();
+  }
+
+  async findByIdsAndUserId(ids: number[], userId: number): Promise<Routine[]> {
+    return await this.createQueryBuilder(`routine`)
+      .leftJoinAndSelect(`routine.routineStretchings`, `routineStretchings`)
+      .where('routine.id IN (:...ids)', { ids })
+      .andWhere(`routine.userId = :userId`, { userId })
+      .orderBy(`routine.order`, 'ASC')
+      .addOrderBy(`routineStretchings.order`, 'ASC')
+      .getMany();
   }
 }

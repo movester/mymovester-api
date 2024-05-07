@@ -1,7 +1,7 @@
 import { UploadModule } from '@app/common/upload/upload.module';
 import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
 import { UserStretchingLike } from '@app/persistence/domain/like/entity/user-stretching-like.entity';
-import { RoutineItem } from '@app/persistence/domain/routine/entity/routine-item.entity';
+import { RoutineStretching } from '@app/persistence/domain/routine/entity/routine-stretching.entity';
 import { Routine } from '@app/persistence/domain/routine/entity/routine.entity';
 import { StretchingEffect } from '@app/persistence/domain/stretching/entity/stretching-effect.entity';
 import { StretchingImage } from '@app/persistence/domain/stretching/entity/stretching-image.entity';
@@ -39,7 +39,7 @@ import { UserModule } from './user/user.module';
           entities: [
             __dirname + '/../**/*.entity.{js,ts}',
             Routine,
-            RoutineItem,
+            RoutineStretching,
             StretchingEffect,
             StretchingImage,
             StretchingPrecaution,
@@ -49,7 +49,7 @@ import { UserModule } from './user/user.module';
             UserStretchingLike,
             BaseEntityClass,
           ],
-          synchronize: configService.get<boolean>('DB_SYNCHRONIZE'),
+          synchronize: false,
         };
       },
     }),

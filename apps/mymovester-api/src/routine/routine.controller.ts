@@ -15,6 +15,7 @@ import {
 } from '@nestjs/common';
 import {
   CreateRoutineRequest,
+  CreateRoutineStretchingRequest,
   DeleteRoutinesRequest,
   UpdateRoutineRequest,
 } from 'apps/mymovester-api/src/routine/routine.request';
@@ -85,6 +86,21 @@ export class RoutineController {
   ): Promise<IDefaultResponse> {
     return DefaultResponse.ok(
       await this.routineService.updateRoutine(user.id, id, request.title),
+    );
+  }
+
+  @Post('/stretchings')
+  @UseGuards(JwtAuthGuard)
+  async createRoutineStretching(
+    @UserDeco() user: IUser,
+    @Body() request: CreateRoutineStretchingRequest,
+  ): Promise<IDefaultResponse> {
+    return DefaultResponse.ok(
+      await this.routineService.createRoutineStretching(
+        user.id,
+        request.routineIds,
+        request.stretchingId,
+      ),
     );
   }
 }

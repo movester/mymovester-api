@@ -1,4 +1,5 @@
 import { isArrayEqual } from '@app/common';
+import { RoutineStretchingRepository } from '@app/persistence/domain/routine/repository/routine-item.repository';
 import { RoutineRepository } from '@app/persistence/domain/routine/repository/routine.repository';
 import {
   BadRequestException,
@@ -17,6 +18,8 @@ export class RoutineService {
   constructor(
     @InjectRepository(RoutineRepository)
     private routineRepository: RoutineRepository,
+    @InjectRepository(RoutineStretchingRepository)
+    private routineStretchingRepository: RoutineStretchingRepository,
   ) {}
 
   async createRoutine(userId: number, title: string): Promise<null> {
@@ -120,6 +123,41 @@ export class RoutineService {
     }
 
     await this.routineRepository.updateRoutine(id, title);
+
+    return;
+  }
+
+  async createRoutineStretching(
+    userId: number,
+    routineIds: number[],
+    stretchingId: number,
+  ): Promise<void> {
+    const routines = await this.routineRepository.findByIdsAndUserId(
+      routineIds,
+      userId,
+    );
+
+    if (
+      isArrayEqual(
+        routines.map((routine) => routine.userId),
+        [userId],
+      )
+    ) {
+      throw new BadRequestException('루틴에 스트레칭 추가 권한이 없습니다.');
+    }
+
+    const routineStretchings = routines.map((routine) => {
+      const order =
+        routine.routineStretchings.length === 0
+          ? 1
+          : routine.routineStretchings[routine.routineStretchings.length - 1]
+              .order + 1;
+      return { stretchingId: stretchingId, routineId: routine.id, order };
+    });
+
+    await this.routineStretchingRepository.saveRoutineStretchings(
+      routineStretchings,
+    );
 
     return;
   }
