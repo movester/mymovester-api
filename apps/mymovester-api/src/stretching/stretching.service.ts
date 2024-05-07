@@ -2,6 +2,7 @@ import { Stretching } from '@app/persistence/domain/stretching/entity/stretching
 import { StretchingRepository } from '@app/persistence/domain/stretching/repository/stretching.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IStretchingService } from 'apps/mymovester-api/src/stretching/stretching.interface';
 import { LikeService } from '../like/like.service';
 import { GetStretchingListRequest } from './request/get-stretching-list.request';
 import {
@@ -14,7 +15,7 @@ import {
 } from './response/stretching-list.response';
 
 @Injectable()
-export class StretchingService {
+export class StretchingService implements IStretchingService {
   constructor(
     @InjectRepository(StretchingRepository)
     private stretchingRepository: StretchingRepository,
