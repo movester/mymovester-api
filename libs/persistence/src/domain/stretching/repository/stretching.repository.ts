@@ -87,7 +87,7 @@ export class StretchingRepository extends Repository<Stretching> {
 
     if (request.effect) {
       query
-        .leftJoinAndSelect('stretching.stretchingEffect', 'stretchingEffect')
+        .leftJoinAndSelect('stretching.stretchingEffects', 'stretchingEffect')
         .andWhere('stretchingEffect.effect = :effect', {
           effect: request.effect,
         });
