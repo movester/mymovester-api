@@ -1,5 +1,24 @@
 import { Gender, SocialType } from '@app/common';
+import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { UpdateUserRequest } from 'apps/mymovester-api/src/user/request/update-user.request';
+import { UserResponse } from 'apps/mymovester-api/src/user/response/user.response';
 
+export interface IUserService {
+  getUserBySocialUid(socialUid: string): Promise<User>;
+
+  createUser(user: {
+    socialUid: string;
+    socialType: SocialType;
+    name: string;
+    email: string;
+  }): Promise<User>;
+
+  getUser(id: number): Promise<UserResponse>;
+
+  deleteUser(id: number): Promise<void>;
+
+  updateUser(id: number, request: UpdateUserRequest): Promise<null>;
+}
 export interface IUser {
   id: number;
   socialUuid: string;

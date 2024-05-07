@@ -5,9 +5,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateUserRequest } from 'apps/mymovester-api/src/user/request/update-user.request';
 import { UserResponse } from 'apps/mymovester-api/src/user/response/user.response';
+import { IUserService } from 'apps/mymovester-api/src/user/user.interface';
 
 @Injectable()
-export class UserService {
+export class UserService implements IUserService {
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
