@@ -7,12 +7,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ILikeService } from 'apps/mymovester-api/src/like/like.interface';
 import { IStretchingListDTO } from '../stretching/response/stretching-list.response';
 import { UserStretchingLikeListResponse } from '../stretching/response/user-stretching-like-list.response';
 import { GetUserStretchingLikeListRequest } from './request/get-user-stretching-like-request';
 
 @Injectable()
-export class LikeService {
+export class LikeService implements ILikeService {
   constructor(
     @InjectRepository(UserStretchingLikeRepository)
     private userStretchingLikeRepository: UserStretchingLikeRepository,

@@ -9,6 +9,13 @@ import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service'
 @Module({
   imports: [TypeOrmModule.forFeature([Routine])],
   controllers: [RoutineController],
-  providers: [RoutineService, RoutineRepository, UserRepository],
+  providers: [
+    {
+      provide: 'IRoutineService',
+      useClass: RoutineService,
+    },
+    RoutineRepository,
+    UserRepository,
+  ],
 })
 export class RoutineModule {}
