@@ -1,8 +1,13 @@
 import {
+  DefaultResponse,
+  IDefaultResponse,
+} from '@app/common/response/default.response';
+import {
   Controller,
   Delete,
   Get,
   HttpCode,
+  Inject,
   Param,
   ParseIntPipe,
   Post,
@@ -10,20 +15,19 @@ import {
   UseGuards,
   Version,
 } from '@nestjs/common';
-import { LikeService } from './like.service';
+import { ILikeService } from 'apps/mymovester-api/src/like/like.interface';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserDeco } from '../shared/decorator/user.decorator';
-import { IUser } from '../user/user.interface';
-import {
-  DefaultResponse,
-  IDefaultResponse,
-} from '@app/common/response/default.response';
-import { GetUserStretchingLikeListRequest } from './request/get-user-stretching-like-request';
 import { UserStretchingLikeListResponse } from '../stretching/response/user-stretching-like-list.response';
+import { IUser } from '../user/user.interface';
+import { GetUserStretchingLikeListRequest } from './request/get-user-stretching-like-request';
 
 @Controller('like')
 export class LikeController {
-  constructor(private likeService: LikeService) {}
+  constructor(
+    @Inject('ILikeService')
+    private readonly likeService: ILikeService,
+  ) {}
 
   @Post('/stretchings/:id')
   @HttpCode(201)
