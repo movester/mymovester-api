@@ -10,10 +10,11 @@ import {
   GetRoutineListResponse,
   GetRoutineStretchingListResponse,
 } from 'apps/mymovester-api/src/routine/routine-response';
+import { IRoutineService } from 'apps/mymovester-api/src/routine/routine.interface';
 import { DeleteRoutinesRequest } from './routine.request';
 
 @Injectable()
-export class RoutineService {
+export class RoutineService implements IRoutineService {
   constructor(
     @InjectRepository(RoutineRepository)
     private routineRepository: RoutineRepository,
