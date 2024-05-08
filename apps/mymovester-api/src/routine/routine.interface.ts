@@ -18,4 +18,10 @@ export interface IRoutineService {
   cloneRoutine(userId: number, id: number): Promise<null>;
 
   updateRoutine(userId: number, id: number, title: string): Promise<void>;
+
+  createRoutineStretching(
+    userId: number,
+    routineIds: number[],
+    stretchingId: number,
+  ): Promise<void>;
 }
