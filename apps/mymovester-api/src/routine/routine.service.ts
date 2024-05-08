@@ -146,6 +146,20 @@ export class RoutineService {
       throw new BadRequestException('루틴에 스트레칭 추가 권한이 없습니다.');
     }
 
+    if (
+      routines
+        .map((routine) =>
+          routine.routineStretchings.filter(
+            (stretching) => stretching.stretchingId === stretchingId,
+          ),
+        )
+        .some((strecthing) => strecthing.length >= 2)
+    ) {
+      throw new BadRequestException(
+        '루틴에 동일한 스트레칭은 2개까지만 추가 가능합니다.',
+      );
+    }
+
     const routineStretchings = routines.map((routine) => {
       const order =
         routine.routineStretchings.length === 0
