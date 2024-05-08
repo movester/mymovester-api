@@ -7,26 +7,30 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   ParseIntPipe,
   Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
+import { IRoutineService } from 'apps/mymovester-api/src/routine/routine.interface';
 import {
   CreateRoutineRequest,
   CreateRoutineStretchingRequest,
   DeleteRoutinesRequest,
   UpdateRoutineRequest,
 } from 'apps/mymovester-api/src/routine/routine.request';
-import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserDeco } from '../shared/decorator/user.decorator';
 import { IUser } from '../user/user.interface';
 
 @Controller('/routines')
 export class RoutineController {
-  constructor(private routineService: RoutineService) {}
+  constructor(
+    @Inject('IRoutineService')
+    private readonly routineService: IRoutineService,
+  ) {}
 
   @Post('/')
   @UseGuards(JwtAuthGuard)

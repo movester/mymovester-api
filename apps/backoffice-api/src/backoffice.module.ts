@@ -1,15 +1,15 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { StretchingModule } from './stretching/stretching.module';
+import { UploadModule } from '@app/common/upload/upload.module';
+import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
 import { StretchingEffect } from '@app/persistence/domain/stretching/entity/stretching-effect.entity';
 import { StretchingImage } from '@app/persistence/domain/stretching/entity/stretching-image.entity';
 import { StretchingPrecaution } from '@app/persistence/domain/stretching/entity/stretching-precaution.entity';
 import { StretchingTechnique } from '@app/persistence/domain/stretching/entity/stretching-technique.entity';
 import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
-import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
-import { UploadModule } from '@app/common/upload/upload.module';
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { StretchingModule } from './stretching/stretching.module';
 
 @Module({
   imports: [

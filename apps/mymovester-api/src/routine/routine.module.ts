@@ -14,6 +14,11 @@ import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service'
     RoutineService,
     RoutineRepository,
     RoutineStretchingRepository,
+    {
+      provide: 'IRoutineService',
+      useClass: RoutineService,
+    },
+    RoutineRepository,
     UserRepository,
   ],
 })

@@ -1,27 +1,31 @@
 import {
+  DefaultResponse,
+  IDefaultResponse,
+} from '@app/common/response/default.response';
+import {
   Controller,
   Get,
+  Inject,
   Param,
   ParseIntPipe,
   Query,
   UseGuards,
   Version,
 } from '@nestjs/common';
-import { StretchingDetailResponse } from './response/stretching-detail.response';
-import { StretchingService } from './stretching.service';
-import { StretchingListResponse } from './response/stretching-list.response';
-import { GetStretchingListRequest } from './request/get-stretching-list.request';
+import { IStretchingService } from 'apps/mymovester-api/src/stretching/stretching.interface';
 import { AccessAuthGuard } from '../auth/access-auth.guard';
 import { UserDeco } from '../shared/decorator/user.decorator';
 import { IUser } from '../user/user.interface';
-import {
-  DefaultResponse,
-  IDefaultResponse,
-} from '@app/common/response/default.response';
+import { GetStretchingListRequest } from './request/get-stretching-list.request';
+import { StretchingDetailResponse } from './response/stretching-detail.response';
+import { StretchingListResponse } from './response/stretching-list.response';
 
 @Controller('stretchings')
 export class StretchingController {
-  constructor(private stretchingService: StretchingService) {}
+  constructor(
+    @Inject('IStretchingService')
+    private readonly stretchingService: IStretchingService,
+  ) {}
 
   @Get('/:id')
   @UseGuards(AccessAuthGuard)
