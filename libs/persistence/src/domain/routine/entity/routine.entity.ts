@@ -5,9 +5,6 @@ import { Column, DeleteDateColumn, Entity, OneToMany, OneToOne } from 'typeorm';
 
 @Entity('routine')
 export class Routine extends BaseEntityClass {
-  map(arg0: (routine: any) => any): number[] {
-    throw new Error('Method not implemented.');
-  }
   @Column({
     name: 'title',
     type: 'varchar',
