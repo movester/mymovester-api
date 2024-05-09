@@ -1,5 +1,5 @@
 import { BaseEntityClass } from '@app/persistence/domain/base-entity.entity';
-import { RoutineItem } from '@app/persistence/domain/routine/entity/routine-item.entity';
+import { RoutineStretching } from '@app/persistence/domain/routine/entity/routine-stretching.entity';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
 import { Column, DeleteDateColumn, Entity, OneToMany, OneToOne } from 'typeorm';
 
@@ -40,11 +40,15 @@ export class Routine extends BaseEntityClass {
   })
   user: User;
 
-  @OneToMany(() => RoutineItem, (routineItem) => routineItem.routine, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-    cascade: ['insert'],
-    nullable: true,
-  })
-  routineItems: RoutineItem[];
+  @OneToMany(
+    () => RoutineStretching,
+    (routineStretching) => routineStretching.routine,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+      cascade: ['insert'],
+      nullable: true,
+    },
+  )
+  routineStretchings: RoutineStretching[];
 }

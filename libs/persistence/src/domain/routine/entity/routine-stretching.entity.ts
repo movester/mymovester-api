@@ -3,8 +3,8 @@ import { Routine } from '@app/persistence/domain/routine/entity/routine.entity';
 import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
-@Entity('routine_item')
-export class RoutineItem extends BaseEntityClass {
+@Entity('routine_stretching')
+export class RoutineStretching extends BaseEntityClass {
   @Column({
     name: 'order',
     type: 'int',
@@ -12,6 +12,13 @@ export class RoutineItem extends BaseEntityClass {
     comment: '스트레칭 순서',
   })
   order: number;
+
+  @Column({
+    name: 'routine_id',
+    type: 'int',
+    comment: '루틴 ID',
+  })
+  routineId: number;
 
   @ManyToOne(() => Routine, {
     onDelete: 'CASCADE',
