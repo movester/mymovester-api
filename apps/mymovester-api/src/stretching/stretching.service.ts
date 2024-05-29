@@ -101,6 +101,8 @@ export class StretchingService implements IStretchingService {
       },
     );
 
+    stretchingList.sort((a, b) => b.id - a.id);
+
     return new StretchingListResponse(total, stretchingList);
   }
 }
