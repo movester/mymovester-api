@@ -107,4 +107,20 @@ export class RoutineController {
       ),
     );
   }
+
+  @Post('/:id/stretchings/:stretchingId/clone')
+  @UseGuards(JwtAuthGuard)
+  async cloneRoutineStretching(
+    @UserDeco() user: IUser,
+    @Param('id', ParseIntPipe) id: number,
+    @Param('stretchingId', ParseIntPipe) stretchingId: number,
+  ): Promise<IDefaultResponse> {
+    return DefaultResponse.ok(
+      await this.routineService.cloneRoutineStretching(
+        user.id,
+        id,
+        stretchingId,
+      ),
+    );
+  }
 }

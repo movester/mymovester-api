@@ -1,4 +1,3 @@
-import { Routine } from '@app/persistence/domain/routine/entity/routine.entity';
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { RoutineStretching } from '../entity/routine-stretching.entity';
@@ -6,7 +5,7 @@ import { RoutineStretching } from '../entity/routine-stretching.entity';
 @Injectable()
 export class RoutineStretchingRepository extends Repository<RoutineStretching> {
   constructor(private readonly dataSource: DataSource) {
-    super(Routine, dataSource.createEntityManager());
+    super(RoutineStretching, dataSource.createEntityManager());
   }
 
   async saveRoutineStretchings(
@@ -24,5 +23,13 @@ export class RoutineStretchingRepository extends Repository<RoutineStretching> {
         .values(request)
         .execute();
     });
+  }
+
+  async findByRoutineId(routineId: number): Promise<RoutineStretching[]> {
+    return await this.createQueryBuilder(`routineStretching`)
+      .select()
+      .where(`routineStretching.routineId = :routineId`, { routineId })
+      .orderBy(`routineStretching.order`, 'ASC')
+      .getMany();
   }
 }

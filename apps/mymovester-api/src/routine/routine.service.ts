@@ -176,4 +176,46 @@ export class RoutineService implements IRoutineService {
 
     return;
   }
+
+  async cloneRoutineStretching(
+    userId: number,
+    routineId: number,
+    stretchingId: number,
+  ): Promise<void> {
+    const routine = await this.routineRepository.findByIdAndUserId(
+      routineId,
+      userId,
+    );
+
+    if (!routine) {
+      throw new BadRequestException(
+        '스트레칭을 복제할 루틴이 존재하지 않습니다.',
+      );
+    }
+
+    const routineStretchings =
+      await this.routineStretchingRepository.findByRoutineId(routineId);
+
+    const filterRoutineStretchings = routineStretchings.filter(
+      (rs) => rs.stretchingId === stretchingId,
+    );
+
+    if (filterRoutineStretchings.length >= 2) {
+      throw new BadRequestException('루틴에 스트레칭은 최대 2개 입니다.');
+    }
+
+    await this.routineStretchingRepository.saveRoutineStretchings([
+      {
+        order:
+          filterRoutineStretchings.length === 0
+            ? routineStretchings[routineStretchings.length - 1].order + 1
+            : filterRoutineStretchings[filterRoutineStretchings.length - 1]
+                .order + 1,
+        stretchingId,
+        routineId,
+      },
+    ]);
+
+    return;
+  }
 }
