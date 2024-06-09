@@ -1,5 +1,6 @@
 import { Gender, SocialType } from '@app/common';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { CreateUserTermsRequest } from 'apps/mymovester-api/src/user/request/create-user-terms.request';
 import { UpdateUserRequest } from 'apps/mymovester-api/src/user/request/update-user.request';
 import { UserResponse } from 'apps/mymovester-api/src/user/response/user.response';
 
@@ -18,6 +19,8 @@ export interface IUserService {
   deleteUser(id: number): Promise<void>;
 
   updateUser(id: number, request: UpdateUserRequest): Promise<null>;
+
+  createUserTerms(id: number, request: CreateUserTermsRequest): Promise<void>;
 }
 export interface IUser {
   id: number;

@@ -1,7 +1,7 @@
-import { DataSource, Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { User } from '@app/persistence/domain/user/entity/user.entity';
 import { SocialType } from '@app/common';
+import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { Injectable } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -50,5 +50,22 @@ export class UserRepository extends Repository<User> {
 
   async findUser(id: number): Promise<User> {
     return await this.findOne({ where: { id } });
+  }
+
+  async updateUserTerms(
+    id: number,
+    isTermAgreed: boolean,
+    isPrivacyPolicyAgreed: boolean,
+    isMarketingAgreed: boolean,
+  ): Promise<void> {
+    await this.createQueryBuilder()
+      .update(User)
+      .set({
+        ...(isTermAgreed && { isTermAgreed }),
+        ...(isPrivacyPolicyAgreed && { isPrivacyPolicyAgreed }),
+        ...(isMarketingAgreed && { isMarketingAgreed }),
+      })
+      .where('id = :id', { id })
+      .execute();
   }
 }
