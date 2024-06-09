@@ -24,10 +24,13 @@ export class AuthService {
     const { socialUid } = body;
     const userProperties = await this.kakaoService.getUserProperties(socialUid);
 
+    let isTermsAgreed;
+
     // kakaoUid를 기반으로 기가입 유저 valid
     let user: User = await this.userService.getUserBySocialUid(
       userProperties.id.toString(),
     );
+    isTermsAgreed = user.isTermAgreed == null ? false : true;
 
     if (user == null) {
       // 회원가입
@@ -44,6 +47,7 @@ export class AuthService {
         user.id,
         `${user.nickName}님의 루틴`,
       );
+      isTermsAgreed = false;
     }
 
     const { accessToken, refreshToken } = await this.getJwtToken(
@@ -57,6 +61,7 @@ export class AuthService {
       name: user.nickName,
       accessToken,
       refreshToken,
+      isTermsAgreed,
     };
 
     return new LoginResponse(loginResponseParam);

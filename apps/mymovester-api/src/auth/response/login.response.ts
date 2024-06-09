@@ -4,6 +4,7 @@ export interface ILoginResponseDTO {
   name: string;
   accessToken: string;
   refreshToken: string;
+  isTermsAgreed: boolean;
 }
 
 export class LoginResponse implements ILoginResponseDTO {
@@ -12,6 +13,7 @@ export class LoginResponse implements ILoginResponseDTO {
   name: string;
   accessToken: string;
   refreshToken: string;
+  isTermsAgreed: boolean;
 
   constructor(user: ILoginResponseDTO) {
     this.id = user.id;
@@ -19,5 +21,6 @@ export class LoginResponse implements ILoginResponseDTO {
     this.name = user.name;
     this.accessToken = user.accessToken;
     this.refreshToken = user.refreshToken;
+    this.isTermsAgreed = user.isTermsAgreed;
   }
 }
