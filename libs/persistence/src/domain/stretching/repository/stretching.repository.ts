@@ -1,13 +1,13 @@
-import { DataSource, Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { getSkipAndTake } from '@app/common';
 import {
   StretchingEffectType,
   StretchingListOrderFilter,
   StretchingMainCategoryType,
   StretchingSubCategoryType,
 } from '@app/common/enum';
-import { getSkipAndTake } from '@app/common';
 import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
+import { Injectable } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class StretchingRepository extends Repository<Stretching> {
@@ -67,7 +67,7 @@ export class StretchingRepository extends Repository<Stretching> {
     if (request.orderFilter === StretchingListOrderFilter.POPULAR) {
       query.orderBy('stretching.views', 'DESC');
     } else {
-      query.orderBy('stretching.createdAt', 'DESC');
+      query.orderBy('stretching.id', 'DESC');
     }
 
     return query.getManyAndCount();
@@ -108,7 +108,7 @@ export class StretchingRepository extends Repository<Stretching> {
     if (request.orderFilter === StretchingListOrderFilter.VIEW) {
       query.orderBy('stretching.views', 'DESC');
     } else {
-      query.orderBy('stretching.createdAt', 'DESC');
+      query.orderBy('stretching.id', 'DESC');
     }
 
     return query.getManyAndCount();
