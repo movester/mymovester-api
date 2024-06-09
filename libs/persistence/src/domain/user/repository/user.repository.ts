@@ -1,7 +1,7 @@
-import { DataSource, Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
-import { User } from '@app/persistence/domain/user/entity/user.entity';
 import { SocialType } from '@app/common';
+import { User } from '@app/persistence/domain/user/entity/user.entity';
+import { Injectable } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -14,12 +14,14 @@ export class UserRepository extends Repository<User> {
     socialType: SocialType;
     name: string;
     email: string;
+    profileUrl: string;
   }): Promise<User> {
     const user: User = this.create({
       email: request.email,
       nickName: request.name,
       socialUid: request.socialUid,
       socialType: request.socialType,
+      profileUrl: request.profileUrl,
     });
 
     await this.save(user);
