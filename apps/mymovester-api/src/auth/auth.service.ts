@@ -1,14 +1,14 @@
+import { SocialType } from '@app/common';
+import { User } from '@app/persistence/domain/user/entity/user.entity';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { ILoginResponseDTO, LoginResponse } from './response/login.response';
-import { UserService } from '../user/user.service';
-import { User } from '@app/persistence/domain/user/entity/user.entity';
-import { KakaoService } from 'apps/mymovester-api/src/auth/kakao.service';
-import { SocialType } from '@app/common';
 import { JwtToken } from 'apps/mymovester-api/src/auth/auth.interface';
-import { IUserDetail } from 'apps/mymovester-api/src/user/user.interface';
+import { KakaoService } from 'apps/mymovester-api/src/auth/kakao.service';
 import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service';
+import { IUserDetail } from 'apps/mymovester-api/src/user/user.interface';
+import { UserService } from '../user/user.service';
+import { ILoginResponseDTO, LoginResponse } from './response/login.response';
 
 @Injectable()
 export class AuthService {
@@ -36,6 +36,7 @@ export class AuthService {
         socialType: SocialType.KAKAO,
         name: userProperties.kakao_account.profile.nickname,
         email: userProperties.kakao_account.email,
+        profileUrl: userProperties.kakao_account.profile.profile_image_url,
       });
 
       // 첫 회원 가입일 경우 "홍길동님의 루틴" 기본 제공

@@ -6,6 +6,7 @@ export interface IUserPropertiesResponse {
   kakao_account: {
     profile: {
       nickname: string;
+      profile_image_url: string;
     };
     email: string;
   };

@@ -25,6 +25,7 @@ export class UserService implements IUserService {
     socialType: SocialType;
     name: string;
     email: string;
+    profileUrl: string;
   }): Promise<User> {
     return await this.userRepository.createUser(user);
   }
