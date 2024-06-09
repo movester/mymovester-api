@@ -30,7 +30,7 @@ export class AuthService {
     let user: User = await this.userService.getUserBySocialUid(
       userProperties.id.toString(),
     );
-    isTermsAgreed = user.isTermAgreed == null ? false : true;
+    isTermsAgreed = !!user.isTermAgreed;
 
     if (user == null) {
       // 회원가입

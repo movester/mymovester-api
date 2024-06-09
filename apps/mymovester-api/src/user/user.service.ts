@@ -58,6 +58,7 @@ export class UserService implements IUserService {
       gender: user.gender,
       deletedAt: user.deletedAt,
       profileUrl: user.profileUrl,
+      isTermsAgreed: !!user.isTermAgreed,
     });
   }
 
