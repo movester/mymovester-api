@@ -20,19 +20,19 @@ export class GetStretchingListRequest {
   @IsOptional()
   @IsString()
   @Length(1, 50)
-  title: string | null;
+  title?: string;
 
   @IsOptional()
   @IsEnum(StretchingMainCategoryType)
-  mainCategory: StretchingMainCategoryType | null;
+  mainCategory?: StretchingMainCategoryType;
 
   @IsOptional()
   @IsEnum(StretchingSubCategoryType)
-  subCategory: StretchingSubCategoryType | null;
+  subCategory?: StretchingSubCategoryType;
 
   @IsOptional()
   @IsEnum(StretchingEffectType)
-  effect: StretchingEffectType | null;
+  effect?: StretchingEffectType;
 
   @IsEnum(StretchingListOrderFilter)
   orderFilter: StretchingListOrderFilter = StretchingListOrderFilter.RECENT;
