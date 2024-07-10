@@ -7,6 +7,7 @@ import {
   Controller,
   Get,
   Inject,
+  Post,
   Put,
   UseGuards,
   Version,
@@ -14,6 +15,7 @@ import {
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'apps/mymovester-api/src/auth/jwt-auth.guard';
 import { UserDeco } from 'apps/mymovester-api/src/shared/decorator/user.decorator';
+import { CreateUserTermsRequest } from 'apps/mymovester-api/src/user/request/create-user-terms.request';
 import { UpdateUserRequest } from 'apps/mymovester-api/src/user/request/update-user.request';
 import { UserResponse } from 'apps/mymovester-api/src/user/response/user.response';
 import { IUser } from 'apps/mymovester-api/src/user/user.interface';
@@ -48,5 +50,17 @@ export class UserController {
     @Body() body: UpdateUserRequest,
   ): Promise<IDefaultResponse> {
     return DefaultResponse.ok(await this.userService.updateUser(user.id, body));
+  }
+
+  @Version('2')
+  @Post('/terms')
+  @UseGuards(JwtAuthGuard)
+  async createUserTerms(
+    @UserDeco() user: IUser,
+    @Body() body: CreateUserTermsRequest,
+  ): Promise<IDefaultResponse> {
+    return DefaultResponse.ok(
+      await this.userService.createUserTerms(user.id, body),
+    );
   }
 }

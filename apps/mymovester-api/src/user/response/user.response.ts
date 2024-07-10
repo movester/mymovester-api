@@ -12,6 +12,7 @@ export interface IUserDTO {
   gender: Gender;
   profileUrl: string;
   deletedAt: Date;
+  isTermsAgreed: boolean;
 }
 
 export class UserResponse implements IUserDTO {
@@ -26,6 +27,7 @@ export class UserResponse implements IUserDTO {
   gender: Gender;
   profileUrl: string;
   deletedAt: Date;
+  isTermsAgreed: boolean;
 
   constructor(user: IUserDTO) {
     (this.id = user.id), (this.creatdAt = user.creatdAt);
@@ -38,5 +40,6 @@ export class UserResponse implements IUserDTO {
     this.gender = user.gender;
     this.profileUrl = user.profileUrl;
     this.deletedAt = user.deletedAt;
+    this.isTermsAgreed = user.isTermsAgreed;
   }
 }

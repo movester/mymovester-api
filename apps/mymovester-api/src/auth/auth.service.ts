@@ -58,6 +58,7 @@ export class AuthService {
       profileUrl: user.profileUrl,
       accessToken,
       refreshToken,
+      isTermsAgreed: !!user.isTermAgreed,
     };
 
     return new LoginResponse(loginResponseParam);

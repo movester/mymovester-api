@@ -1,6 +1,6 @@
+import { Gender, SocialType } from '@app/common';
 import { Column, Entity } from 'typeorm';
 import { BaseEntityClass } from '../../base-entity.entity';
-import { Gender, SocialType } from '@app/common';
 
 @Entity('user')
 export class User extends BaseEntityClass {
@@ -77,4 +77,28 @@ export class User extends BaseEntityClass {
     nullable: true,
   })
   deletedAt: Date;
+
+  @Column({
+    name: 'is_term_agreed',
+    type: 'boolean',
+    nullable: true,
+    comment: '이용약관 동의 여부',
+  })
+  isTermAgreed: boolean;
+
+  @Column({
+    name: 'is_privacy_policy_agreed',
+    type: 'boolean',
+    nullable: true,
+    comment: '개인정보 동의 여부',
+  })
+  isPrivacyPolicyAgreed: boolean;
+
+  @Column({
+    name: 'is_marketing_agreed',
+    type: 'boolean',
+    nullable: true,
+    comment: '마케팅 수신 동의 여부',
+  })
+  isMarketingAgreed: boolean;
 }

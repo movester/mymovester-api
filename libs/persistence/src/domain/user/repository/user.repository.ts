@@ -53,4 +53,21 @@ export class UserRepository extends Repository<User> {
   async findUser(id: number): Promise<User> {
     return await this.findOne({ where: { id } });
   }
+
+  async updateUserTerms(
+    id: number,
+    isTermAgreed: boolean,
+    isPrivacyPolicyAgreed: boolean,
+    isMarketingAgreed: boolean,
+  ): Promise<void> {
+    await this.createQueryBuilder()
+      .update(User)
+      .set({
+        ...(isTermAgreed && { isTermAgreed }),
+        ...(isPrivacyPolicyAgreed && { isPrivacyPolicyAgreed }),
+        ...(isMarketingAgreed && { isMarketingAgreed }),
+      })
+      .where('id = :id', { id })
+      .execute();
+  }
 }
