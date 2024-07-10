@@ -1,11 +1,12 @@
-import { Transform } from 'class-transformer';
-import { IsEnum, IsInt, IsOptional, IsString, Length } from 'class-validator';
+import { toNumber } from '@app/common/cast';
 import {
+  StretchingEffectType,
   StretchingListOrderFilter,
   StretchingMainCategoryType,
   StretchingSubCategoryType,
 } from '@app/common/enum';
-import { toNumber } from '@app/common/cast';
+import { Transform } from 'class-transformer';
+import { IsEnum, IsInt, IsOptional, IsString, Length } from 'class-validator';
 
 export class GetStretchingListRequest {
   @Transform(({ value }) => toNumber(value, { default: 1, min: 1 }))
@@ -19,15 +20,19 @@ export class GetStretchingListRequest {
   @IsOptional()
   @IsString()
   @Length(1, 50)
-  title: string | null;
+  title?: string;
 
   @IsOptional()
   @IsEnum(StretchingMainCategoryType)
-  mainCategory: StretchingMainCategoryType | null;
+  mainCategory?: StretchingMainCategoryType;
 
   @IsOptional()
   @IsEnum(StretchingSubCategoryType)
-  subCategory: StretchingSubCategoryType | null;
+  subCategory?: StretchingSubCategoryType;
+
+  @IsOptional()
+  @IsEnum(StretchingEffectType)
+  effect?: StretchingEffectType;
 
   @IsEnum(StretchingListOrderFilter)
   orderFilter: StretchingListOrderFilter = StretchingListOrderFilter.RECENT;

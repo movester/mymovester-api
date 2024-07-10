@@ -82,6 +82,9 @@ export class StretchingService implements IStretchingService {
     const [stretchings, total] =
       await this.stretchingRepository.findStretchingListForProduct(request);
 
+    if (total === 0) {
+      return new StretchingListResponse(total, null);
+    }
     const stretchingSummaries =
       await this.stretchingRepository.findStretchingSummaries(
         stretchings.map((s) => s.id),
