@@ -12,6 +12,12 @@ declare const module: any;
 async function bootstrap() {
   const app = await NestFactory.create(MymovesterModule);
 
+  app.enableCors({
+    origin: '*',
+    methods: ['GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'],
+    credentials: true,
+  });
+
   // API versioning
   app.setGlobalPrefix('/api/');
   app.enableVersioning({
