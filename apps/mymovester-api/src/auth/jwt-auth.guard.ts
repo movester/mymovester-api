@@ -18,14 +18,17 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const accessToken = request.headers.cookie
+    ?.split('; ')
+    .find((row) => row.startsWith('access_token='))
+    ?.split('=')[1];
 
-    if (!token) {
+    if (!accessToken) {
       throw new UnauthorizedException(null, '사용자 정보가 유효하지 않습니다');
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
+      const payload = await this.jwtService.verifyAsync(accessToken , {
         secret: this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET'),
       });
       request['user'] = payload;
@@ -34,12 +37,5 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
 
     return true;
-  }
-
-  private extractTokenFromHeader(
-    request: Request & { headers: { authorization: string } },
-  ): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
   }
 }

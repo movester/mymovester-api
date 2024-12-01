@@ -19,9 +19,12 @@ export class AccessAuthGuard extends AuthGuard('jwt') {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const accessToken = request.headers.cookie
+      ?.split('; ')
+      .find((row) => row.startsWith('access_token='))
+      ?.split('=')[1];
 
-    if (!token) {
+    if (!accessToken) {
       const nonAuth: IUser = {
         id: null,
         socialUuid: null,
@@ -30,7 +33,7 @@ export class AccessAuthGuard extends AuthGuard('jwt') {
       request['user'] = nonAuth;
     } else {
       try {
-        const payload = await this.jwtService.verifyAsync(token, {
+        const payload = await this.jwtService.verifyAsync(accessToken, {
           secret: this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET'),
         });
         request['user'] = payload;
@@ -42,12 +45,5 @@ export class AccessAuthGuard extends AuthGuard('jwt') {
       }
     }
     return true;
-  }
-
-  private extractTokenFromHeader(
-    request: Request & { headers: { authorization: string } },
-  ): string | undefined {
-    const [type, token] = request.headers.authorization?.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
   }
 }
