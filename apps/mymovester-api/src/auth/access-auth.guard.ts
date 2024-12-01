@@ -25,6 +25,7 @@ export class AccessAuthGuard extends AuthGuard('jwt') {
       const nonAuth: IUser = {
         id: null,
         socialUuid: null,
+        nickName: null,
       };
       request['user'] = nonAuth;
     } else {

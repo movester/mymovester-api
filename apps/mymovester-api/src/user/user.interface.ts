@@ -25,6 +25,7 @@ export interface IUserService {
 export interface IUser {
   id: number;
   socialUuid: string;
+  nickName: string;
 }
 
 export interface IUserDetail {

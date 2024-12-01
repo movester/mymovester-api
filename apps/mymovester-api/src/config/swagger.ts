@@ -17,7 +17,7 @@ export function swaggerBuilder(app) {
       bearerFormat: 'JWT',
       in: 'header',
     })
-    .addServer('http://prod.movester.kr', 'prod')
+    // .addServer('http://prod.movester.kr', 'prod')
     .build();
 
   const swaggerCustomOptions: SwaggerCustomOptions = {

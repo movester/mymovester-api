@@ -33,7 +33,7 @@ export class StretchingController {
     @Param('id', ParseIntPipe) id: number,
     @UserDeco() user: IUser,
   ): Promise<StretchingDetailResponse> {
-    return this.stretchingService.getStretchingById(id, user.id);
+    return this.stretchingService.getStretchingById(id, user);
   }
 
   @Version('2')
@@ -44,24 +44,28 @@ export class StretchingController {
     @UserDeco() user: IUser,
   ): Promise<IDefaultResponse> {
     return DefaultResponse.ok(
-      await this.stretchingService.getStretchingById(id, user.id),
+      await this.stretchingService.getStretchingById(id, user),
     );
   }
 
   @Get('/')
+  @UseGuards(AccessAuthGuard)
   getStretchingList(
+    @UserDeco() user: IUser,
     @Query() query: GetStretchingListRequest,
   ): Promise<StretchingListResponse> {
-    return this.stretchingService.getStretchingList(query);
+    return this.stretchingService.getStretchingList(user, query);
   }
 
   @Version('2')
   @Get('/')
+  @UseGuards(AccessAuthGuard)
   async getStretchingListV2(
+    @UserDeco() user: IUser,
     @Query() query: GetStretchingListRequest,
   ): Promise<IDefaultResponse> {
     return DefaultResponse.ok(
-      await this.stretchingService.getStretchingList(query),
+      await this.stretchingService.getStretchingList(user, query),
     );
   }
 }
