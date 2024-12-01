@@ -5,16 +5,19 @@ import {
   StretchingMainCategoryType,
   StretchingSubCategoryType,
 } from '@app/common/enum';
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString, Length } from 'class-validator';
 
 export class GetStretchingListRequest {
   @Transform(({ value }) => toNumber(value, { default: 1, min: 1 }))
   @IsInt()
-  page = 1;
+  @ApiProperty({default: 1})
+  page: number;
 
   @Transform(({ value }) => toNumber(value, { default: 1, min: 1 }))
   @IsInt()
+  @ApiProperty()
   size!: number;
 
   @IsOptional()

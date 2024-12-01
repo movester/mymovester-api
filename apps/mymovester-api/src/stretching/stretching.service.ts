@@ -1,6 +1,6 @@
 import { Stretching } from '@app/persistence/domain/stretching/entity/stretching.entity';
 import { StretchingRepository } from '@app/persistence/domain/stretching/repository/stretching.repository';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IStretchingService } from 'apps/mymovester-api/src/stretching/stretching.interface';
 import { LikeService } from '../like/like.service';
@@ -13,19 +13,24 @@ import {
   IStretchingListDTO,
   StretchingListResponse,
 } from './response/stretching-list.response';
+import { ISlackService } from '@app/common/external/slack/slack.interface';
+import { MovesterAccessCheckMessageBuilder } from '@app/common/external/slack/builder/movster-access-check-message.builder';
+import { formatDateToString } from '@app/common';
+import { IUser } from '../user/user.interface';
 
 @Injectable()
 export class StretchingService implements IStretchingService {
   constructor(
     @InjectRepository(StretchingRepository)
     private stretchingRepository: StretchingRepository,
-
+    @Inject('ISlackService')
+    private readonly slackService: ISlackService,
     private likeService: LikeService,
   ) {}
 
   async getStretchingById(
     id: number,
-    userId?: number,
+    user?: IUser,
   ): Promise<StretchingDetailResponse> {
     const stretching: Stretching =
       await this.stretchingRepository.findStretchingDetail(id);
@@ -41,10 +46,10 @@ export class StretchingService implements IStretchingService {
     stretching.save();
 
     let isLike = false;
-    if (userId) {
+    if (user) {
       const userStretchingLike =
         await this.likeService.getUserStretchingLikeByUserIdAndStretchingId(
-          userId,
+          user.id,
           stretching.id,
         );
       isLike = userStretchingLike !== null;
@@ -73,10 +78,17 @@ export class StretchingService implements IStretchingService {
       isLike: isLike,
     };
 
+    await this.slackService.sendMarkdownMessage(
+      new MovesterAccessCheckMessageBuilder({
+        userId: user.id, nickName: user.nickName, accessTime: formatDateToString(new Date()),
+      }).build()
+    );
+
     return new StretchingDetailResponse(StretchingDetailResponseParam);
   }
 
   async getStretchingList(
+    user: IUser,
     request: GetStretchingListRequest,
   ): Promise<StretchingListResponse> {
     const [stretchings, total] =
@@ -105,6 +117,12 @@ export class StretchingService implements IStretchingService {
     );
 
     stretchingList.sort((a, b) => b.id - a.id);
+    
+    await this.slackService.sendMarkdownMessage(
+      new MovesterAccessCheckMessageBuilder({
+        userId: user.id, nickName: user.nickName, accessTime: formatDateToString(new Date()),
+      }).build()
+    );
 
     return new StretchingListResponse(total, stretchingList);
   }

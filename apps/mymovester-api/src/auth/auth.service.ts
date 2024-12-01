@@ -1,6 +1,6 @@
-import { SocialType } from '@app/common';
+import { SocialType, formatDateToString } from '@app/common';
 import { User } from '@app/persistence/domain/user/entity/user.entity';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { JwtToken } from 'apps/mymovester-api/src/auth/auth.interface';
@@ -9,6 +9,8 @@ import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service'
 import { IUserDetail } from 'apps/mymovester-api/src/user/user.interface';
 import { UserService } from '../user/user.service';
 import { ILoginResponseDTO, LoginResponse } from './response/login.response';
+import { ISlackService } from '@app/common/external/slack/slack.interface';
+import { SignUpMessageBuilder } from '@app/common/external/slack/builder/sign-up-message.builder';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +20,8 @@ export class AuthService {
     private configService: ConfigService,
     private kakaoService: KakaoService,
     private routineService: RoutineService,
+    @Inject('ISlackService')
+    private readonly slackService: ISlackService,
   ) {}
 
   async kakaoLogin({ body }): Promise<LoginResponse> {
@@ -38,6 +42,10 @@ export class AuthService {
         email: userProperties.kakao_account.email,
         profileUrl: userProperties.kakao_account.profile.profile_image_url,
       });
+
+      await this.slackService.sendMarkdownMessage(new SignUpMessageBuilder({
+          userId: user.id, nickName: user.nickName, accessTime: formatDateToString(new Date()),
+      }).build())
 
       // 첫 회원 가입일 경우 "홍길동님의 루틴" 기본 제공
       await this.routineService.createRoutine(

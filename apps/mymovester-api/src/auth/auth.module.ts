@@ -11,6 +11,7 @@ import { RoutineService } from 'apps/mymovester-api/src/routine/routine.service'
 import { UserService } from '../user/user.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { SlackService } from '@app/common';
 
 @Module({
   imports: [
@@ -26,6 +27,11 @@ import { AuthService } from './auth.service';
     UserService,
     KakaoService,
     RoutineService,
+    {
+      provide: 'ISlackService',
+      useClass: SlackService,
+    },
+
     // Repository
     UserRepository,
     RoutineRepository,

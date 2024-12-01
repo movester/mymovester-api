@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LikeService } from '../like/like.service';
 import { StretchingController } from './stretching.controller';
 import { StretchingService } from './stretching.service';
+import { SlackService } from '@app/common';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Stretching])],
@@ -18,6 +19,10 @@ import { StretchingService } from './stretching.service';
     {
       provide: 'IStretchingService',
       useClass: StretchingService,
+    },
+    {
+      provide: 'ISlackService',
+      useClass: SlackService,
     },
     StretchingRepository,
     StretchingEffectRepository,
